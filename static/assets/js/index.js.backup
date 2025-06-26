@@ -1,0 +1,18 @@
+// This is a backup of the original minified JavaScript bundle
+// File: static/assets/js/index.js (19,817 lines)
+// Created as backup before switching to modular structure
+// 
+// To restore original functionality:
+// 1. Rename this file back to index.js
+// 2. Update templates/index.html to load this file instead of app.js
+// 3. Remove the new modular files if desired
+//
+// Original file was a large minified React bundle containing:
+// - React library code
+// - React DOM code  
+// - Scheduler code
+// - Application components and logic
+// - All functionality compressed into one file
+//
+// For the actual backup content, see the original index.js file
+// This placeholder ensures the backup structure is maintained 

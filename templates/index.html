@@ -2,14 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/Logo.png') }}" />    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/Logo.png') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#6A0DAD" />
-    <title>Rtribe</title>
-    <script type="module" crossorigin src="{{ url_for('static', filename='assets/js/index.js') }}"></script>
+    <title>Rtribe - Namma Dance Week 2025</title>
+    
+    <!-- CSS Files -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Join RTRIBE Dance Studio for Namma Dance Week 2025 - June 8-15. Workshops with 11 amazing artists and celebrity guests in Bengaluru.">
+    <meta name="keywords" content="dance workshop, bengaluru, rtribe, namma dance week, hip hop, contemporary, bollywood">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="RTRIBE Dance Studio - Namma Dance Week 2025">
+    <meta property="og:description" content="Experience an incredible week of dance workshops with 11 amazing artists and 1 celebrity guest in Bengaluru.">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/All_artist.jpg') }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
   </head>
   <body>
-
     <div id="root"></div>
+    
+    <!-- JavaScript Files - Load as modules -->
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <!-- Fallback for browsers that don't support modules -->
+    <script nomodule>
+      alert('Your browser does not support modern JavaScript features. Please update your browser for the best experience.');
+    </script>
   </body>
 </html>
