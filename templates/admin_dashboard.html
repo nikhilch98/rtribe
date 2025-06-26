@@ -144,6 +144,60 @@
             background: var(--light-purple);
             border: 2px dashed var(--dark-purple);
         }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-title-input {
+                width: 100%;
+            }
+
+            .section-actions {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .section-actions .btn {
+                flex-grow: 1;
+                text-align: center;
+            }
+
+            .item-form {
+                grid-template-columns: 1fr; /* Force single column */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .section-title-input {
+                font-size: 1.3em;
+            }
+
+            .btn {
+                font-size: 0.85em;
+                padding: 0.6em 0.8em;
+            }
+        }
     </style>
 </head>
 <body>
