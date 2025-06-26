@@ -58,7 +58,7 @@ rtribe_python/
 │   │   └── main.js       # JavaScript functionality
 │   └── images/           # Image assets
 ├── data/
-│   └── workshops.json    # Workshop data
+│   └── config.json    # Workshop data
 ```
 
 ## 🎨 Design System
@@ -86,7 +86,7 @@ rtribe_python/
 
 ### Workshop Data Management
 
-Edit `data/workshops.json` to manage workshop information:
+Edit `data/config.json` to manage workshop information:
 
 ```json
 [
@@ -135,7 +135,7 @@ Phone Number: `+91 7338003939`
 ## 🎨 Customization
 
 ### Adding New Workshops
-1. Add workshop data to `data/workshops.json`
+1. Add workshop data to `data/config.json`
 2. Place instructor image in `static/images/`
 3. Restart the server
 

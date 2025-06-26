@@ -1,0 +1,139 @@
+{
+  "siteData": {
+    "title": "Workshops"
+  },
+  "sections": [
+    {
+      "id": "workshops",
+      "title": "NAMMA Dance Week Schedule",
+      "items": [
+        {
+          "id": "2",
+          "artist": "Junaid",
+          "time": "3:00 PM - 5:00 PM",
+          "date": "June 8, 2025",
+          "style": "Choreography",
+          "price": "\u20b9750",
+          "image": "/static/assets/Junaid solo.png"
+        },
+        {
+          "id": "1",
+          "artist": "Bindu",
+          "time": "11:00 AM - 1:00 PM",
+          "date": "June 8, 2025",
+          "style": "Belly Animation",
+          "price": "\u20b9750",
+          "image": "/static/assets/bindu.png"
+        },
+        {
+          "id": "3",
+          "artist": "Bhaskar",
+          "time": "5:00 PM - 7:00 PM",
+          "date": "June 8, 2025",
+          "style": "Contemporary",
+          "price": "\u20b9750",
+          "image": "/static/assets/Bhaskar suresh.png"
+        },
+        {
+          "id": "4",
+          "artist": "Yahvi",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 8, 2025",
+          "style": "Heelssss",
+          "price": "\u20b9750",
+          "image": "/static/assets/Yahvi.png"
+        },
+        {
+          "id": "5",
+          "artist": "Siya",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 9, 2025",
+          "style": "Semi Classical",
+          "price": "\u20b9750",
+          "image": "/static/assets/Siya.png"
+        },
+        {
+          "id": "6",
+          "artist": "Motley",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 10, 2025",
+          "style": "Salsa",
+          "price": "\u20b9750",
+          "image": "/static/assets/motley.png"
+        },
+        {
+          "id": "7",
+          "artist": "Wehzan",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 11, 2025",
+          "style": "Open Style",
+          "price": "\u20b9750",
+          "image": "/static/assets/Wehzan.png"
+        },
+        {
+          "id": "8",
+          "artist": "Junaid",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 12, 2025",
+          "style": "Hip Hop",
+          "price": "\u20b9750",
+          "image": "/static/assets/Junaid solo.png"
+        },
+        {
+          "id": "9",
+          "artist": "Swady",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 13, 2025",
+          "style": "Afro",
+          "price": "\u20b9750",
+          "image": "/static/assets/Swady.png"
+        },
+        {
+          "id": "10",
+          "artist": "Samanth",
+          "time": "11:00 AM - 1:00 PM",
+          "date": "June 14, 2025",
+          "style": "Popping",
+          "price": "\u20b9750",
+          "image": "/static/assets/All_artist.jpg"
+        },
+        {
+          "id": "11",
+          "artist": "Motley",
+          "time": "2:00 PM - 4:00 PM",
+          "date": "June 14, 2025",
+          "style": "Bachata",
+          "price": "\u20b9750",
+          "image": "/static/assets/motley.png"
+        },
+        {
+          "id": "12",
+          "artist": "Amisha",
+          "time": "5:00 PM - 7:00 PM",
+          "date": "June 14, 2025",
+          "style": "Choreography",
+          "price": "\u20b9750",
+          "image": "/static/assets/All_artist.jpg"
+        },
+        {
+          "id": "13",
+          "artist": "Neharikha x Bhaskar",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 14, 2025",
+          "style": "Jazz Funk",
+          "price": "\u20b9750",
+          "image": "/static/assets/All_artist.jpg"
+        },
+        {
+          "id": "14",
+          "artist": "Vaishnavi",
+          "time": "12:00 PM - 2:00 PM",
+          "date": "June 15, 2025",
+          "style": "Celebrity Workshop",
+          "price": "\u20b9750",
+          "image": "/static/assets/All_artist.jpg"
+        }
+      ]
+    }
+  ]
+}

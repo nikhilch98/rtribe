@@ -18808,6 +18808,7 @@ const E3 = O.section`
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 3rem;
+  margin-bottom: 4rem; /* Add space between sections */
 
   @media (max-width: 768px) {
     padding: 0 2rem;
@@ -18982,41 +18983,41 @@ const E3 = O.section`
   }
 `,
   L3 = () => {
-    const [workshops, setWorkshops] = w.exports.useState([]);
+    const [sections, setSections] = w.exports.useState([]);
     w.exports.useEffect(() => {
-      fetch("/api/workshops")
+      fetch("/api/sections")
         .then((response) => response.json())
-        .then((data) => setWorkshops(data))
+        .then((data) => setSections(data))
         .catch((error) => {
-          console.error("Error loading workshops:", error);
-          setWorkshops([]);
+          console.error("Error loading sections:", error);
+          setSections([]);
         });
     }, []);
     const t = (e) => {
-      const n = `Hi, I'm interested for ${e.style || e.title} by ${e.instructor} on ${e.date.replace(", 2025", "")} ${e.time}.`,
+      const n = `Hi, I'm interested for ${e.style} by ${e.artist} on ${e.date.replace(", 2025", "")} ${e.time}.`,
         i = `https://wa.me/917338003939?text=${encodeURIComponent(n)}`;
       window.open(i, "_blank");
     };
     return U(E3, {
       id: "workshops",
       style: { backgroundColor: "black" },
-      children: [
-        D(M3, { children: "NAMMA Dance Week Schedule" }),
+      children: [].concat(...sections.map(section => [
+        D(M3, { children: section.title }),
         D(D3, {
           children: D(w3, {
-            children: workshops.map((e) =>
+            children: section.items.map((e) =>
               U(
                 zc,
                 {
                   children: [
-                    D(C3, { children: D(R3, { src: e.image, alt: e.title }) }),
+                    D(C3, { children: D(R3, { src: e.image, alt: e.style }) }),
                     " ",
                     U(O3, {
                       children: [
                         U(z3, {
                           children: [
-                            D(V3, { children: e.style || e.title }),
-                            U(_3, { children: ["by ", e.instructor] }),
+                            D(V3, { children: e.style }),
+                            U(_3, { children: ["by ", e.artist] }),
                           ],
                         }),
                         " ",
@@ -19045,7 +19046,7 @@ const E3 = O.section`
             ),
           }),
         }),
-      ],
+      ]))
     });
   },
   Y3 = O.section`

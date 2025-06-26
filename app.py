@@ -21,16 +21,17 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def read_workshops():
+def read_config():
     try:
-        with open('data/workshops.json', 'r') as f:
+        with open('data/config.json', 'r') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        return []
+        # Default structure if config is missing or malformed
+        return {"sections": []}
 
-def write_workshops(workshops):
-    with open('data/workshops.json', 'w') as f:
-        json.dump(workshops, f, indent=2)
+def write_config(config):
+    with open('data/config.json', 'w') as f:
+        json.dump(config, f, indent=2)
 
 @app.route('/')
 def index():
@@ -46,6 +47,7 @@ def login():
     if 'logged_in' in session:
         return redirect(url_for('dashboard'))
     if request.method == 'POST':
+        # In a real application, use a more secure way to handle credentials
         if request.form['username'] == 'admin' and request.form['password'] == 'password':
             session['logged_in'] = True
             next_url = request.args.get('next')
@@ -57,105 +59,60 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('admin_dashboard.html')
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-@app.route('/api/workshops')
-def get_workshops():
-    workshops = read_workshops()
-    return jsonify(workshops)
+# --- API for dynamic sections ---
 
-@app.route('/api/workshops/update/<int:workshop_id>', methods=['POST'])
-@login_required
-def update_workshop(workshop_id):
-    data = request.get_json()
-    workshops = read_workshops()
-    for workshop in workshops:
-        if workshop['id'] == workshop_id:
-            workshop.update(data)
-            break
-    write_workshops(workshops)
-    return jsonify({'status': 'success'})
+@app.route('/api/sections', methods=['GET'])
+def get_sections():
+    config = read_config()
+    return jsonify(config.get('sections', []))
 
-@app.route('/api/workshops/reorder', methods=['POST'])
+@app.route('/api/sections', methods=['POST'])
 @login_required
-def reorder_workshops():
-    data = request.get_json()
-    order = [int(item_id) for item_id in data.get('order', [])]
-    workshops = read_workshops()
+def save_sections():
+    """
+    Receives the entire sections array from the client and saves it to the config file.
+    This single endpoint handles creating, updating, deleting, and reordering sections and their items.
+    """
+    sections_data = request.get_json()
+    if not isinstance(sections_data, list):
+        return jsonify({'status': 'error', 'message': 'Invalid data format. Expected a list of sections.'}), 400
     
-    workshop_map = {w['id']: w for w in workshops}
-    ordered_workshops = [workshop_map[item_id] for item_id in order if item_id in workshop_map]
+    config = read_config()
+    config['sections'] = sections_data
+    write_config(config)
     
-    write_workshops(ordered_workshops)
-    return jsonify({'status': 'success'})
+    return jsonify({'status': 'success', 'message': 'Sections saved successfully.'})
 
-@app.route('/api/workshops/delete/<int:workshop_id>', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 @login_required
-def delete_workshop(workshop_id):
-    workshops = read_workshops()
-    workshop_to_delete = next((w for w in workshops if w['id'] == workshop_id), None)
-
-    if workshop_to_delete:
-        image_path = workshop_to_delete.get('image')
-        if image_path:
-            # Path is stored like '/static/assets/image.png', remove leading '/' to get relative path
-            filepath = image_path.lstrip('/')
-            if os.path.exists(filepath):
-                try:
-                    os.remove(filepath)
-                except OSError as e:
-                    # Log error but continue with workshop deletion
-                    print(f"Error deleting image file {filepath}: {e}")
-
-    workshops = [w for w in workshops if w['id'] != workshop_id]
-    write_workshops(workshops)
-    return jsonify({'status': 'success'})
-
-@app.route('/api/workshops/add', methods=['POST'])
-@login_required
-def add_workshop():
+def upload_file():
     if 'image' not in request.files:
-        return jsonify({'status': 'error', 'message': 'No image file provided'}), 400
+        return jsonify({'status': 'error', 'message': 'No file part in the request'}), 400
     
     file = request.files['image']
     
     if file.filename == '':
-        return jsonify({'status': 'error', 'message': 'No selected file'}), 400
+        return jsonify({'status': 'error', 'message': 'No file selected for uploading'}), 400
         
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        
         file.save(filepath)
         
-        workshops = read_workshops()
-        
-        new_workshop_data = {
-            'title': request.form.get('title'),
-            'instructor': request.form.get('instructor'),
-            'time': request.form.get('time'),
-            'date': request.form.get('date'),
-            'style': request.form.get('style'),
-            'price': request.form.get('price'),
-            'image': f'/{filepath}'
-        }
-        
-        new_id = max([w['id'] for w in workshops]) + 1 if workshops else 1
-        new_workshop_data['id'] = new_id
-        
-        workshops.append(new_workshop_data)
-        write_workshops(workshops)
-        
-        return jsonify({'status': 'success', 'id': new_id})
-    else:
-        return jsonify({'status': 'error', 'message': 'Invalid file type'}), 400
+        image_url = f'/{filepath}' # URL path for the client
+        return jsonify({'status': 'success', 'imageUrl': image_url})
+
+    return jsonify({'status': 'error', 'message': 'File type not allowed'}), 400
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8002)
+    app.run(debug=True, host='0.0.0.0', port=8004)
