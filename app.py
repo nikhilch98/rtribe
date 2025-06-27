@@ -71,7 +71,12 @@ def logout():
 @app.route('/api/sections', methods=['GET'])
 def get_sections():
     config = read_config()
-    return jsonify(config.get('sections', []))
+    # For admin dashboard: return sections array directly
+    # For frontend: return complete config including carousel images
+    
+    # Check if request is from admin dashboard by checking the referer or user agent
+    # For now, let's return complete config and fix the frontend to handle it properly
+    return jsonify(config)
 
 @app.route('/api/sections', methods=['POST'])
 @login_required
@@ -79,16 +84,31 @@ def save_sections():
     """
     Receives the entire sections array from the client and saves it to the config file.
     This single endpoint handles creating, updating, deleting, and reordering sections and their items.
+    Preserves carousel images and other config data.
     """
     sections_data = request.get_json()
     if not isinstance(sections_data, list):
         return jsonify({'status': 'error', 'message': 'Invalid data format. Expected a list of sections.'}), 400
     
+    # Read current config to preserve carousel images and other data
     config = read_config()
+    
+    # Update only the sections part
     config['sections'] = sections_data
+    
+    # Ensure other required fields exist
+    if 'siteData' not in config:
+        config['siteData'] = {'title': 'Workshops'}
+    if 'carouselImages' not in config:
+        config['carouselImages'] = [
+            {"id": 1, "imageUrl": "/static/assets/All_artist.jpg", "title": "All Artists", "description": "Meet all our talented dance instructors"},
+            {"id": 2, "imageUrl": "/static/assets/schedule.jpg", "title": "Schedule", "description": "View the complete workshop schedule"},
+            {"id": 3, "imageUrl": "/static/assets/fees1.jpg", "title": "Fees", "description": "Workshop pricing information"}
+        ]
+    
     write_config(config)
     
-    return jsonify({'status': 'success', 'message': 'Sections saved successfully.'})
+    return jsonify({'status': 'success', 'message': 'Sections saved successfully.', 'preserved_carousel_images': len(config.get('carouselImages', []))})
 
 @app.route('/api/upload', methods=['POST'])
 @login_required
@@ -112,6 +132,37 @@ def upload_file():
         return jsonify({'status': 'success', 'imageUrl': image_url})
 
     return jsonify({'status': 'error', 'message': 'File type not allowed'}), 400
+
+@app.route('/api/carousel', methods=['POST'])
+@login_required
+def save_carousel():
+    """
+    Saves carousel images data to the config file.
+    Preserves sections and other config data.
+    """
+    carousel_data = request.get_json()
+    if not isinstance(carousel_data, list):
+        return jsonify({'status': 'error', 'message': 'Invalid data format. Expected a list of carousel items.'}), 400
+    
+    # Read current config to preserve other data
+    config = read_config()
+    
+    # Update carousel images
+    config['carouselImages'] = carousel_data
+    
+    # Ensure other required fields exist
+    if 'siteData' not in config:
+        config['siteData'] = {'title': 'Workshops'}
+    if 'sections' not in config:
+        config['sections'] = []
+    
+    write_config(config)
+    
+    return jsonify({
+        'status': 'success', 
+        'message': 'Carousel saved successfully.', 
+        'carousel_items_count': len(carousel_data)
+    })
 
 
 if __name__ == '__main__':

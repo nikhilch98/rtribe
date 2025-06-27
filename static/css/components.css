@@ -1228,7 +1228,120 @@ main {
   opacity: 0.3;
 }
 
-/* Desktop Carousel Container */
+/* Focus styling for keyboard navigation */
+.hero-section:focus {
+  outline: 3px solid rgba(106, 13, 173, 0.8);
+  outline-offset: -3px;
+}
+
+/*
+   Unified carousel CSS - No longer used
+   Now using restored circular layout with left-center-right slides
+
+.hero-carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-current-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+*/
+
+/*
+   Navigation Buttons CSS - No longer used
+   Carousel now uses keyboard navigation (left/right arrow keys)
+
+.hero-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--primary-white);
+  border: 2px solid rgba(106, 13, 173, 0.6);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.hero-nav-prev {
+  left: 20px;
+}
+
+.hero-nav-next {
+  right: 20px;
+}
+
+.hero-nav-btn:hover {
+  background-color: var(--primary-purple);
+  border-color: var(--primary-purple);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 15px rgba(106, 13, 173, 0.8);
+}
+
+.hero-nav-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.5);
+}
+
+@media (max-width: 768px) {
+  .hero-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .hero-nav-prev {
+    left: 15px;
+  }
+  
+  .hero-nav-next {
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+  
+  .hero-nav-prev {
+    left: 10px;
+  }
+  
+  .hero-nav-next {
+    right: 10px;
+  }
+}
+*/
+
+/* Desktop Carousel Container - Restored for circular layout */
 .hero-desktop-container {
   position: relative;
   width: 100%;

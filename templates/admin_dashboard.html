@@ -98,18 +98,185 @@
 
         .item-list { list-style: none; padding: 0; }
 
-        .item-form {
+        .workshop-cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 0.75rem;
-            padding: 1rem;
-            border: 1px solid #f0f0f0;
-            border-radius: 6px;
-            margin-bottom: 0.75rem;
-            background: #fafafa;
-            cursor: grab;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
         }
-        .item-form:active { cursor: grabbing; }
+
+        .admin-workshop-card {
+            background: var(--primary-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: grab;
+            position: relative;
+            border: 2px solid transparent;
+            pointer-events: auto;
+        }
+
+        .admin-workshop-card:active { cursor: grabbing; }
+        .admin-workshop-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-purple);
+        }
+
+        .admin-workshop-card.editing {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.2);
+        }
+
+        .admin-card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .admin-card-content {
+            padding: 1.5rem;
+        }
+
+        .admin-card-style {
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .admin-card-style:hover { background-color: rgba(106, 13, 173, 0.1); }
+
+        .admin-card-artist {
+            color: var(--text-dark);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .admin-card-artist:hover { background-color: rgba(0, 0, 0, 0.05); }
+
+        .admin-card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-card-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .admin-card-detail-text {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .admin-card-detail-text:hover { background-color: rgba(0, 0, 0, 0.05); }
+
+        .admin-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-card-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .admin-card-price:hover { background-color: rgba(106, 13, 173, 0.1); }
+
+        .admin-card-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 1; /* Always visible for debugging */
+            transition: opacity 0.2s;
+            z-index: 999;
+            pointer-events: auto;
+        }
+
+        .admin-workshop-card:hover .admin-card-actions {
+            opacity: 1;
+        }
+
+        .admin-card-actions .btn {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            min-width: 40px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .admin-card-actions .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .delete-item-btn:hover {
+            background-color: var(--danger-red-dark) !important;
+        }
+
+        .upload-image-btn:hover {
+            background-color: var(--dark-purple) !important;
+        }
+
+        .editable-field {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            font-weight: inherit;
+            width: 100%;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .editable-field:focus {
+            outline: none;
+            background-color: var(--primary-white);
+            box-shadow: 0 0 0 2px var(--primary-purple);
+        }
+
+        .admin-help-text {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-style: italic;
+            background: rgba(106, 13, 173, 0.05);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
 
         .form-group { display: flex; flex-direction: column; }
         .form-group label { 
@@ -179,8 +346,22 @@
                 text-align: center;
             }
 
-            .item-form {
-                grid-template-columns: 1fr; /* Force single column */
+            .workshop-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .admin-workshop-card {
+                max-width: 100%;
+            }
+
+            .admin-card-actions {
+                opacity: 1; /* Always show on mobile */
+            }
+
+            .admin-card-actions .btn {
+                font-size: 1rem;
+                padding: 0.5rem;
             }
         }
 
@@ -206,6 +387,26 @@
             <h1>Admin Dashboard</h1>
             <a href="/logout" class="btn btn-secondary">Logout</a>
         </div>
+        
+        <div class="admin-help-text" style="margin-bottom: 2rem;">
+            <strong>💡 How to use:</strong> 
+            <strong>Double-click</strong> any text to edit it • 
+            <strong>Drag cards</strong> to reorder • 
+            <strong>Click 📁</strong> to upload images • 
+            <strong>Click 🗑️</strong> to delete workshops
+        </div>
+
+        <!-- Carousel Management Section -->
+        <div class="section-editor">
+            <div class="section-header">
+                <h2 style="margin: 0; color: var(--dark-purple);">🎠 Top Carousel Management</h2>
+                <div class="section-actions">
+                    <button id="add-carousel-item-btn" class="btn btn-primary">+ Add Carousel Item</button>
+                    <button id="save-carousel-btn" class="btn btn-success">Save Carousel Changes</button>
+                </div>
+            </div>
+            <div id="carousel-items-grid" class="workshop-cards-grid"></div>
+        </div>
 
         <div id="sections-container"></div>
         <button id="add-section-btn" class="btn btn-primary">+ Add New Section</button>
@@ -216,15 +417,29 @@
         document.addEventListener('DOMContentLoaded', () => {
     const sectionsContainer = document.getElementById('sections-container');
     const addSectionBtn = document.getElementById('add-section-btn');
+    const carouselItemsGrid = document.getElementById('carousel-items-grid');
+    const addCarouselItemBtn = document.getElementById('add-carousel-item-btn');
+    const saveCarouselBtn = document.getElementById('save-carousel-btn');
     let sectionsData = [];
+    let carouselData = [];
 
     // --- Data Fetching and Saving ---
     async function fetchSections() {
         try {
             const response = await fetch('/api/sections');
             if (!response.ok) throw new Error('Failed to fetch sections');
-            sectionsData = await response.json();
+            const config = await response.json();
+            
+            // Extract sections from the config response
+            sectionsData = config.sections || [];
+            console.log('Loaded sections data:', sectionsData);
+            
+            // Extract carousel data from config
+            carouselData = config.carouselImages || [];
+            console.log('Loaded carousel data:', carouselData);
+            
             renderAllSections();
+            renderCarouselItems();
         } catch (error) {
             console.error('Error fetching sections:', error);
             alert('Could not load section data. Please refresh.');
@@ -238,12 +453,10 @@
             const sectionId = sectionEl.dataset.id;
             const sectionTitle = sectionEl.querySelector('.section-title-input').value;
             const items = [];
-            sectionEl.querySelectorAll('.item-form').forEach(itemEl => {
+            sectionEl.querySelectorAll('.admin-workshop-card').forEach(itemEl => {
                 const item = { id: parseInt(itemEl.dataset.id, 10) };
-                itemEl.querySelectorAll('input, select, textarea').forEach(input => {
-                    if (input.name) {
-                        // A new item might not have an id yet, so we check
-                        if (input.name === 'id' && !input.value) return;
+                itemEl.querySelectorAll('input[type="hidden"]').forEach(input => {
+                    if (input.name && input.name !== 'id') {
                         item[input.name] = input.value;
                     }
                 });
@@ -253,13 +466,15 @@
         });
 
         try {
+            // Send just the sections array as the API expects
             const response = await fetch('/api/sections', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedSections)
             });
             if (!response.ok) throw new Error('Failed to save changes');
-            await response.json();
+            const result = await response.json();
+            console.log('Save result:', result);
             alert('Changes saved successfully!');
             sectionsData = updatedSections; // Update local data
         } catch (error) {
@@ -291,34 +506,66 @@
                     <button class="save-all-btn btn btn-success">Save All Changes</button>
                 </div>
             </div>
-            <ul class="item-list"></ul>
+            <div class="workshop-cards-grid"></div>
         `;
 
-        const itemList = sectionEl.querySelector('.item-list');
-        if (section.items) {
+        const cardsGrid = sectionEl.querySelector('.workshop-cards-grid');
+        if (section.items && section.items.length > 0) {
             section.items.forEach(item => {
                 const itemEl = createItemElement(item, section.id);
-                itemList.appendChild(itemEl);
+                cardsGrid.appendChild(itemEl);
             });
+        } else {
+            cardsGrid.innerHTML = '<div class="admin-help-text">No workshops yet. Click "Add Item" to create your first workshop card.</div>';
         }
 
         // --- Event Listeners for Section ---
-        sectionEl.querySelector('.delete-section-btn').addEventListener('click', () => {
-            const confirmation = prompt(`This action is irreversible. To delete the "${section.title}" section, type DELETE to confirm.`);
+        sectionEl.querySelector('.delete-section-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            const sectionTitle = section.title || 'this section';
+            const confirmation = prompt(`This action is irreversible. To delete the "${sectionTitle}" section, type DELETE to confirm.`);
+            
             if (confirmation === 'DELETE') {
+                console.log('Deleting section:', section);
+                
+                // Remove from DOM
                 sectionEl.remove();
-                saveAllChanges(); // Immediately save the deletion to the server
+                
+                // Auto-save changes
+                saveAllChanges().then(() => {
+                    console.log('Section deleted and changes saved successfully');
+                    alert('Section deleted successfully!');
+                }).catch((error) => {
+                    console.error('Error saving after section deletion:', error);
+                    alert('Warning: The section was deleted from the display but may not have been saved. Please refresh the page.');
+                });
             } else if (confirmation !== null && confirmation !== '') {
                 alert('Incorrect input. Deletion cancelled.');
             }
         });
 
         sectionEl.querySelector('.add-item-btn').addEventListener('click', () => {
-            const currentItems = Array.from(itemList.querySelectorAll('.item-form'));
+            const cardsGrid = sectionEl.querySelector('.workshop-cards-grid');
+            const currentItems = Array.from(cardsGrid.querySelectorAll('.admin-workshop-card'));
             const newItemId = Math.max(0, ...currentItems.map(i => parseInt(i.dataset.id, 10))) + 1;
-            const newItem = { id: newItemId, artist: '', time: '', date: '', style: '', price: '', image: '' };
+            const newItem = { 
+                id: newItemId, 
+                artist: 'New Artist', 
+                time: '12:00 PM - 2:00 PM', 
+                date: 'June 15, 2025', 
+                style: 'New Style', 
+                price: '₹750', 
+                image: '/static/assets/All_artist.jpg' 
+            };
+            
+            // Remove help text if it exists
+            const helpText = cardsGrid.querySelector('.admin-help-text');
+            if (helpText) helpText.remove();
+            
             const itemEl = createItemElement(newItem, section.id);
-            itemList.appendChild(itemEl);
+            cardsGrid.appendChild(itemEl);
         });
 
         sectionEl.querySelector('.save-all-btn').addEventListener('click', saveAllChanges);
@@ -327,34 +574,171 @@
     }
 
     function createItemElement(item, sectionId) {
-        const itemEl = document.createElement('li');
-        itemEl.className = 'item-form';
+        const itemEl = document.createElement('div');
+        itemEl.className = 'admin-workshop-card';
         itemEl.dataset.id = item.id;
+        
         itemEl.innerHTML = `
-            <div class="form-group"><label>ID</label><input type="text" name="id" value="${item.id}" readonly style="background:#eee;"></div>
-            <div class="form-group"><label>Artist</label><input type="text" name="artist" value="${item.artist || ''}"></div>
-            <div class="form-group"><label>Time</label><input type="text" name="time" value="${item.time || ''}"></div>
-            <div class="form-group"><label>Date</label><input type="text" name="date" value="${item.date || ''}"></div>
-            <div class="form-group"><label>Style</label><input type="text" name="style" value="${item.style || ''}"></div>
-            <div class="form-group"><label>Price</label><input type="text" name="price" value="${item.price || ''}"></div>
-            <div class="form-group">
-                <label>Image</label>
-                <input type="text" name="image" value="${item.image || ''}" placeholder="Image URL">
-                <input type="file" class="image-upload" accept="image/*" style="margin-top: 5px;">
+            <div class="admin-card-image" style="background-image: url('${item.image || '/static/assets/All_artist.jpg'}')">
+                <div class="admin-card-actions">
+                    <button type="button" class="btn btn-primary upload-image-btn" title="Upload Image" style="margin-right: 5px;">📁</button>
+                    <button type="button" class="btn btn-danger delete-item-btn" title="Delete Workshop" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
+                </div>
+                <input type="file" class="image-upload" accept="image/*" style="display: none;">
             </div>
-            <div class="form-actions" style="grid-column: 1 / -1; justify-self: end;">
-                <button class="delete-item-btn btn btn-danger">Delete</button>
+            
+            <div class="admin-card-content">
+                <div class="admin-card-style" data-field="style">${item.style || 'Workshop Style'}</div>
+                <div class="admin-card-artist" data-field="artist">by ${item.artist || 'Artist Name'}</div>
+                
+                <div class="admin-card-details">
+                    <div class="admin-card-detail">
+                        <span>📅</span>
+                        <span class="admin-card-detail-text" data-field="date">${item.date || 'Date'}</span>
+                    </div>
+                    <div class="admin-card-detail">
+                        <span>⏰</span>
+                        <span class="admin-card-detail-text" data-field="time">${item.time || 'Time'}</span>
+                    </div>
+                </div>
+                
+                <div class="admin-card-footer">
+                    <div class="admin-card-price" data-field="price">${item.price || '₹750'}</div>
+                    <button class="btn btn-primary" style="pointer-events: none;">Register Now</button>
+                </div>
             </div>
+            
+            <!-- Hidden inputs for data storage -->
+            <input type="hidden" name="id" value="${item.id}">
+            <input type="hidden" name="artist" value="${item.artist || ''}">
+            <input type="hidden" name="time" value="${item.time || ''}">
+            <input type="hidden" name="date" value="${item.date || ''}">
+            <input type="hidden" name="style" value="${item.style || ''}">
+            <input type="hidden" name="price" value="${item.price || ''}">
+            <input type="hidden" name="image" value="${item.image || ''}">
         `;
 
-        // --- Event Listeners for Item ---
-        itemEl.querySelector('.delete-item-btn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to delete this item?')) {
-                itemEl.remove();
-            }
+        // --- Double-click editing functionality ---
+        const editableElements = itemEl.querySelectorAll('[data-field]');
+        editableElements.forEach(element => {
+            element.addEventListener('dblclick', () => {
+                const field = element.dataset.field;
+                const currentValue = field === 'artist' ? 
+                    element.textContent.replace('by ', '') : 
+                    element.textContent;
+                
+                const input = document.createElement('input');
+                input.className = 'editable-field';
+                input.value = currentValue;
+                input.type = 'text';
+                
+                // Replace element with input
+                element.style.display = 'none';
+                element.parentNode.insertBefore(input, element);
+                input.focus();
+                input.select();
+                
+                // Save on blur or enter
+                const saveEdit = () => {
+                    const newValue = input.value.trim();
+                    if (newValue) {
+                        // Update display
+                        if (field === 'artist') {
+                            element.textContent = 'by ' + newValue;
+                        } else {
+                            element.textContent = newValue;
+                        }
+                        
+                        // Update hidden input
+                        const hiddenInput = itemEl.querySelector(`input[name="${field}"]`);
+                        if (hiddenInput) hiddenInput.value = newValue;
+                        
+                        // Update image if it's the image field
+                        if (field === 'image') {
+                            const cardImage = itemEl.querySelector('.admin-card-image');
+                            cardImage.style.backgroundImage = `url('${newValue}')`;
+                        }
+                    }
+                    
+                    input.remove();
+                    element.style.display = '';
+                    itemEl.classList.remove('editing');
+                };
+                
+                input.addEventListener('blur', saveEdit);
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') saveEdit();
+                    if (e.key === 'Escape') {
+                        input.remove();
+                        element.style.display = '';
+                        itemEl.classList.remove('editing');
+                    }
+                });
+                
+                itemEl.classList.add('editing');
+            });
         });
 
-        itemEl.querySelector('.image-upload').addEventListener('change', async (event) => {
+                // --- Delete functionality (Chrome-compatible) ---
+        const deleteBtn = itemEl.querySelector('.delete-item-btn');
+        if (deleteBtn) {
+            console.log('Setting up delete button for workshop:', item.id);
+            
+            // Chrome-compatible event handling
+            deleteBtn.removeEventListener('click', deleteBtn._deleteHandler || (() => {}));
+            
+            const deleteHandler = function(e) {
+                console.log('Delete button clicked for workshop:', item.id);
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                
+                // Chrome-compatible confirmation
+                setTimeout(() => {
+                    const workshopName = item.style || 'this workshop';
+                    const userConfirmed = confirm(`Delete "${workshopName}"?\n\nThis cannot be undone.`);
+                    
+                    if (userConfirmed) {
+                        console.log('User confirmed deletion');
+                        
+                        // Remove from DOM
+                        itemEl.remove();
+                        
+                        // Check if this was the last workshop
+                        const cardsGrid = document.querySelector('.workshop-cards-grid');
+                        if (cardsGrid && cardsGrid.children.length === 0) {
+                            cardsGrid.innerHTML = '<div class="admin-help-text">No workshops yet. Click "Add Item" to create your first workshop card.</div>';
+                        }
+                        
+                        // Save changes
+                        saveAllChanges().then(() => {
+                            console.log('Workshop deleted and saved');
+                        }).catch((error) => {
+                            console.error('Error saving:', error);
+                        });
+                    } else {
+                        console.log('User cancelled deletion');
+                    }
+                }, 10); // Small delay for Chrome
+            };
+            
+            deleteBtn._deleteHandler = deleteHandler;
+            deleteBtn.addEventListener('click', deleteHandler, { once: false, passive: false });
+            
+            console.log('Delete button handler attached for workshop:', item.id);
+        } else {
+            console.error('Delete button not found for workshop:', item.id);
+        }
+
+        // --- Image upload functionality ---
+        const uploadBtn = itemEl.querySelector('.upload-image-btn');
+        const fileInput = itemEl.querySelector('.image-upload');
+        
+        uploadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -362,17 +746,38 @@
             formData.append('image', file);
 
             try {
+                uploadBtn.textContent = '⏳';
+                uploadBtn.disabled = true;
+                
                 const response = await fetch('/api/upload', { method: 'POST', body: formData });
                 if (!response.ok) throw new Error('Upload failed');
                 const result = await response.json();
+                
                 if (result.status === 'success') {
-                    itemEl.querySelector('input[name="image"]').value = result.imageUrl;
+                    // Update image display
+                    const cardImage = itemEl.querySelector('.admin-card-image');
+                    cardImage.style.backgroundImage = `url('${result.imageUrl}')`;
+                    
+                    // Update hidden input
+                    const hiddenInput = itemEl.querySelector('input[name="image"]');
+                    if (hiddenInput) hiddenInput.value = result.imageUrl;
+                    
+                    uploadBtn.textContent = '✅';
+                    setTimeout(() => {
+                        uploadBtn.textContent = '📁';
+                        uploadBtn.disabled = false;
+                    }, 2000);
                 } else {
                     throw new Error(result.message || 'Upload failed');
                 }
             } catch (error) {
                 console.error('Error uploading image:', error);
                 alert('Image upload failed. Please try again.');
+                uploadBtn.textContent = '❌';
+                setTimeout(() => {
+                    uploadBtn.textContent = '📁';
+                    uploadBtn.disabled = false;
+                }, 2000);
             }
         });
 
@@ -394,16 +799,378 @@
             ghostClass: 'sortable-ghost'
         });
 
-        document.querySelectorAll('.item-list').forEach(itemList => {
-            new Sortable(itemList, {
+        document.querySelectorAll('.workshop-cards-grid').forEach(cardsGrid => {
+            new Sortable(cardsGrid, {
                 animation: 150,
-                ghostClass: 'sortable-ghost'
+                ghostClass: 'sortable-ghost',
+                handle: '.admin-card-content', // Only allow dragging from the content area, not buttons
+                filter: '.admin-help-text, .admin-card-actions, .btn', // Don't allow dragging from buttons or help text
+                preventOnFilter: false,
+                onEnd: function (evt) {
+                    // Handle reordering for both workshops and carousel items
+                    if (evt.to.id === 'carousel-items-grid') {
+                        updateCarouselOrder();
+                    }
+                }
             });
         });
+
+        // Initialize sortable for carousel items grid specifically
+        if (carouselItemsGrid) {
+            new Sortable(carouselItemsGrid, {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                handle: '.admin-card-content',
+                filter: '.admin-help-text, .admin-card-actions, .btn',
+                preventOnFilter: false,
+                onEnd: updateCarouselOrder
+            });
+        }
+    }
+
+    // --- Carousel Management Functions ---
+    function renderCarouselItems() {
+        carouselItemsGrid.innerHTML = '';
+        
+        if (carouselData.length === 0) {
+            carouselItemsGrid.innerHTML = '<div class="admin-help-text">No carousel items yet. Click "Add Carousel Item" to get started.</div>';
+            return;
+        }
+        
+        carouselData.forEach((item, index) => {
+            const itemEl = createCarouselItemElement(item, index);
+            carouselItemsGrid.appendChild(itemEl);
+        });
+    }
+
+    function createCarouselItemElement(item, index) {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'admin-workshop-card';
+        itemEl.dataset.id = item.id;
+        
+        itemEl.innerHTML = `
+            <div class="admin-card-image" style="background-image: url('${item.imageUrl || '/static/assets/All_artist.jpg'}')">
+                <div class="admin-card-actions">
+                    <button type="button" class="btn btn-primary upload-carousel-image-btn" title="Upload Image" style="margin-right: 5px;">📁</button>
+                    <button type="button" class="btn btn-danger delete-carousel-item-btn" title="Delete Carousel Item" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
+                </div>
+                <input type="file" class="carousel-image-upload" accept="image/*" style="display: none;">
+            </div>
+            
+            <div class="admin-card-content">
+                <div class="admin-card-style" data-field="title">${item.title || 'Carousel Title'}</div>
+                <div class="admin-card-artist" data-field="description">${item.description || 'Carousel Description'}</div>
+                
+                <div class="admin-card-details">
+                    <div class="admin-card-detail">
+                        <span>🔗</span>
+                        <span class="admin-card-detail-text" data-field="imageUrl">${item.imageUrl || 'Image URL'}</span>
+                    </div>
+                    <div class="admin-card-detail">
+                        <span>🔢</span>
+                        <span class="admin-card-detail-text" data-field="id">ID: ${item.id || index + 1}</span>
+                    </div>
+                </div>
+                
+                <div class="admin-card-footer">
+                    <div class="admin-card-price">Carousel #${index + 1}</div>
+                    <button class="btn btn-primary" style="pointer-events: none;">Preview</button>
+                </div>
+            </div>
+            
+            <!-- Hidden inputs for data storage -->
+            <input type="hidden" name="id" value="${item.id}">
+            <input type="hidden" name="title" value="${item.title || ''}">
+            <input type="hidden" name="description" value="${item.description || ''}">
+            <input type="hidden" name="imageUrl" value="${item.imageUrl || ''}">
+        `;
+
+        // --- Double-click editing functionality ---
+        const editableElements = itemEl.querySelectorAll('[data-field]');
+        editableElements.forEach(element => {
+            element.addEventListener('dblclick', () => {
+                const field = element.dataset.field;
+                const currentValue = element.textContent;
+                
+                const input = document.createElement('input');
+                input.className = 'editable-field';
+                input.value = currentValue;
+                input.type = 'text';
+                
+                // Replace element with input
+                element.style.display = 'none';
+                element.parentNode.insertBefore(input, element);
+                input.focus();
+                input.select();
+                
+                // Save on blur or enter
+                const saveEdit = () => {
+                    const newValue = input.value.trim();
+                    if (newValue) {
+                        element.textContent = newValue;
+                        
+                        // Update hidden input
+                        const hiddenInput = itemEl.querySelector(`input[name="${field}"]`);
+                        if (hiddenInput) hiddenInput.value = newValue;
+                        
+                        // Update carouselData
+                        const carouselItem = carouselData.find(c => c.id == item.id);
+                        if (carouselItem) carouselItem[field] = newValue;
+                        
+                        // Update image if it's the imageUrl field
+                        if (field === 'imageUrl') {
+                            const cardImage = itemEl.querySelector('.admin-card-image');
+                            cardImage.style.backgroundImage = `url('${newValue}')`;
+                        }
+                    }
+                    
+                    input.remove();
+                    element.style.display = '';
+                    itemEl.classList.remove('editing');
+                };
+                
+                input.addEventListener('blur', saveEdit);
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') saveEdit();
+                    if (e.key === 'Escape') {
+                        input.remove();
+                        element.style.display = '';
+                        itemEl.classList.remove('editing');
+                    }
+                });
+                
+                itemEl.classList.add('editing');
+            });
+        });
+
+        // --- Delete functionality (Chrome-compatible) ---
+        const deleteBtn = itemEl.querySelector('.delete-carousel-item-btn');
+        if (deleteBtn) {
+            console.log('Setting up delete button for carousel item:', item.id);
+            
+            // Chrome-compatible event handling
+            deleteBtn.removeEventListener('click', deleteBtn._deleteHandler || (() => {}));
+            
+            const deleteHandler = function(e) {
+                console.log('Delete button clicked for carousel item:', item.id);
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                
+                // Chrome-compatible confirmation
+                setTimeout(() => {
+                    const itemTitle = item.title || 'this carousel item';
+                    const userConfirmed = confirm(`Delete "${itemTitle}"?\n\nThis cannot be undone.`);
+                    
+                    if (userConfirmed) {
+                        console.log('User confirmed deletion');
+                        
+                        // Remove from carouselData
+                        carouselData = carouselData.filter(c => c.id != item.id);
+                        
+                        // Remove from DOM
+                        itemEl.remove();
+                        
+                        // Re-render if no items left
+                        if (carouselData.length === 0) {
+                            carouselItemsGrid.innerHTML = '<div class="admin-help-text">No carousel items yet. Click "Add Carousel Item" to get started.</div>';
+                        }
+                        
+                        console.log('Carousel item deleted');
+                    } else {
+                        console.log('User cancelled deletion');
+                    }
+                }, 10); // Small delay for Chrome
+            };
+            
+            deleteBtn._deleteHandler = deleteHandler;
+            deleteBtn.addEventListener('click', deleteHandler, { once: false, passive: false });
+            
+            console.log('Delete button handler attached for carousel item:', item.id);
+        }
+
+        // --- Image upload functionality ---
+        const uploadBtn = itemEl.querySelector('.upload-carousel-image-btn');
+        const fileInput = itemEl.querySelector('.carousel-image-upload');
+        
+        uploadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                uploadBtn.textContent = '⏳';
+                uploadBtn.disabled = true;
+                
+                const response = await fetch('/api/upload', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Upload failed');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    // Update image display
+                    const cardImage = itemEl.querySelector('.admin-card-image');
+                    cardImage.style.backgroundImage = `url('${result.imageUrl}')`;
+                    
+                    // Update hidden input
+                    const hiddenInput = itemEl.querySelector('input[name="imageUrl"]');
+                    if (hiddenInput) hiddenInput.value = result.imageUrl;
+                    
+                    // Update carouselData
+                    const carouselItem = carouselData.find(c => c.id == item.id);
+                    if (carouselItem) carouselItem.imageUrl = result.imageUrl;
+                    
+                    // Update display text
+                    const imageUrlElement = itemEl.querySelector('[data-field="imageUrl"]');
+                    if (imageUrlElement) imageUrlElement.textContent = result.imageUrl;
+                    
+                    uploadBtn.textContent = '✅';
+                    setTimeout(() => {
+                        uploadBtn.textContent = '📁';
+                        uploadBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error(result.message || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Image upload failed. Please try again.');
+                uploadBtn.textContent = '❌';
+                setTimeout(() => {
+                    uploadBtn.textContent = '📁';
+                    uploadBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        return itemEl;
+    }
+
+    async function saveCarouselChanges() {
+        try {
+            // Read current config
+            const response = await fetch('/api/sections');
+            const config = await response.json();
+            
+            // Update carousel data
+            config.carouselImages = carouselData;
+            
+            // Save back to server (we'll need a new endpoint for this)
+            const saveResponse = await fetch('/api/carousel', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carouselData)
+            });
+            
+            if (!saveResponse.ok) throw new Error('Failed to save carousel changes');
+            const result = await saveResponse.json();
+            console.log('Carousel save result:', result);
+            alert('Carousel changes saved successfully!');
+        } catch (error) {
+            console.error('Error saving carousel changes:', error);
+            alert('Failed to save carousel changes. Please try again.');
+        }
+    }
+
+    // --- Event Listeners for Carousel ---
+    addCarouselItemBtn.addEventListener('click', () => {
+        const newId = Math.max(0, ...carouselData.map(c => c.id || 0)) + 1;
+        const newItem = {
+            id: newId,
+            title: 'New Carousel Item',
+            description: 'Description for new carousel item',
+            imageUrl: '/static/assets/All_artist.jpg'
+        };
+        
+        carouselData.push(newItem);
+        
+        // Remove help text if it exists
+        const helpText = carouselItemsGrid.querySelector('.admin-help-text');
+        if (helpText) helpText.remove();
+        
+        const itemEl = createCarouselItemElement(newItem, carouselData.length - 1);
+        carouselItemsGrid.appendChild(itemEl);
+        
+        console.log('Added new carousel item:', newItem);
+    });
+
+    saveCarouselBtn.addEventListener('click', saveCarouselChanges);
+
+    function updateCarouselOrder() {
+        const items = Array.from(carouselItemsGrid.children);
+        const newOrder = [];
+        
+        items.forEach((item, index) => {
+            if (item.classList.contains('admin-workshop-card')) {
+                const id = item.dataset.id;
+                const carouselItem = carouselData.find(c => c.id == id);
+                if (carouselItem) {
+                    newOrder.push(carouselItem);
+                }
+            }
+        });
+        
+        carouselData = newOrder;
+        console.log('Carousel order updated:', carouselData.map(c => c.title));
     }
 
     // --- Initial Load ---
     fetchSections();
+    
+    // --- Debug Helper ---
+    window.debugAdmin = {
+        testDeleteButtons: () => {
+            const deleteButtons = document.querySelectorAll('.delete-item-btn');
+            console.log(`Found ${deleteButtons.length} delete buttons`);
+            deleteButtons.forEach((btn, index) => {
+                console.log(`Delete button ${index + 1}:`, btn);
+                console.log(`Has onclick:`, !!btn.onclick);
+                console.log(`Style:`, btn.style.cssText);
+                console.log(`Classes:`, btn.className);
+            });
+        },
+        clickFirstDeleteButton: () => {
+            const firstDeleteBtn = document.querySelector('.delete-item-btn');
+            if (firstDeleteBtn) {
+                console.log('Manually clicking first delete button:', firstDeleteBtn);
+                firstDeleteBtn.click();
+            } else {
+                console.log('No delete buttons found');
+            }
+        },
+        addTestButton: () => {
+            const testBtn = document.createElement('button');
+            testBtn.textContent = 'TEST DELETE';
+            testBtn.style.cssText = 'position: fixed; top: 10px; left: 10px; z-index: 9999; background: red; color: white; padding: 10px;';
+            testBtn.onclick = () => {
+                alert('Test button works! Delete buttons should work too.');
+                console.log('Test button clicked successfully');
+            };
+            document.body.appendChild(testBtn);
+            console.log('Test button added to page');
+        },
+        sectionsData: () => sectionsData,
+        carouselData: () => carouselData,
+        saveChanges: saveAllChanges,
+        saveCarousel: saveCarouselChanges,
+        testCarouselButtons: () => {
+            const deleteButtons = document.querySelectorAll('.delete-carousel-item-btn');
+            console.log(`Found ${deleteButtons.length} carousel delete buttons`);
+            deleteButtons.forEach((btn, index) => {
+                console.log(`Carousel delete button ${index + 1}:`, btn);
+                console.log(`Has onclick:`, !!btn.onclick);
+                console.log(`Style:`, btn.style.cssText);
+                console.log(`Classes:`, btn.className);
+            });
+        }
+    };
+    
+    console.log('Admin dashboard loaded. Use window.debugAdmin for debugging.');
 });
 
     </script>

@@ -1,25 +1,19 @@
 /**
  * Hero Section with Image Carousel
- * Auto-advancing carousel with 3 images, navigation dots, and responsive design
+ * Auto-advancing carousel with dynamic images, navigation dots, and responsive design
  */
 
-// Carousel images
-const carouselImages = [
-  { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
-  { id: 2, imageUrl: '/static/assets/schedule.jpg' },
-  { id: 3, imageUrl: '/static/assets/fees1.jpg' }
-];
-
 export class HeroSection {
-  constructor() {
+  constructor(carouselImages = []) {
     this.element = null;
+    this.carouselImages = carouselImages;
     this.currentSlide = 1;
-    this.totalSlides = 3;
+    this.totalSlides = carouselImages.length || 3;
     this.autoAdvanceInterval = null;
     this.isMobile = window.innerWidth <= 768;
   }
 
-  // Helper functions for desktop carousel positioning
+  // Helper functions for carousel positioning (restored for circular layout)
   getLeftSlideIndex() {
     return (this.currentSlide - 2 + this.totalSlides) % this.totalSlides;
   }
@@ -32,13 +26,13 @@ export class HeroSection {
     return this.currentSlide % this.totalSlides;
   }
 
+  getCurrentSlideIndex() {
+    return this.currentSlide - 1;
+  }
+
   getCurrentImageUrl() {
-    switch(this.currentSlide) {
-      case 1: return carouselImages[0].imageUrl;
-      case 2: return carouselImages[1].imageUrl;
-      case 3: return carouselImages[2].imageUrl;
-      default: return carouselImages[0].imageUrl;
-    }
+    const imageIndex = this.currentSlide - 1;
+    return this.carouselImages[imageIndex]?.imageUrl || this.carouselImages[0]?.imageUrl || '';
   }
 
   // Navigation functions
@@ -66,19 +60,19 @@ export class HeroSection {
       mobileSlide.style.backgroundImage = `url(${this.getCurrentImageUrl()})`;
     }
 
-    // Update desktop slides
+    // Update desktop slides (circular layout)
     const leftSlide = this.element.querySelector('.hero-slide-left');
     const centerSlide = this.element.querySelector('.hero-slide-center');
     const rightSlide = this.element.querySelector('.hero-slide-right');
 
     if (leftSlide) {
-      leftSlide.style.backgroundImage = `url(${carouselImages[this.getLeftSlideIndex()].imageUrl})`;
+      leftSlide.style.backgroundImage = `url(${this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || ''})`;
     }
     if (centerSlide) {
-      centerSlide.style.backgroundImage = `url(${carouselImages[this.getCenterSlideIndex()].imageUrl})`;
+      centerSlide.style.backgroundImage = `url(${this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || ''})`;
     }
     if (rightSlide) {
-      rightSlide.style.backgroundImage = `url(${carouselImages[this.getRightSlideIndex()].imageUrl})`;
+      rightSlide.style.backgroundImage = `url(${this.carouselImages[this.getRightSlideIndex()]?.imageUrl || ''})`;
     }
 
     // Update navigation dots
@@ -101,6 +95,28 @@ export class HeroSection {
       if (parent) {
         parent.replaceChild(this.render(), this.element);
       }
+    }
+  }
+
+  setupKeyboardNavigation() {
+    this.keyboardHandler = (event) => {
+      // Only handle keyboard navigation when carousel is in view or has focus
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        this.prevSlide();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.nextSlide();
+      }
+    };
+
+    // Add global keyboard listener
+    document.addEventListener('keydown', this.keyboardHandler);
+    
+    // Make carousel focusable for better accessibility
+    if (this.element) {
+      this.element.setAttribute('tabindex', '0');
+      this.element.setAttribute('aria-label', 'Image carousel - Use left and right arrow keys to navigate');
     }
   }
 
@@ -134,16 +150,16 @@ export class HeroSection {
       `;
     }
 
-    // Desktop carousel
+    // Desktop carousel (circular layout)
     let desktopContent = '';
     if (!this.isMobile) {
       desktopContent = `
         <div class="hero-desktop-container">
           <div class="hero-carousel-wrapper">
             <div class="hero-slides-container">
-              <div class="hero-slide hero-slide-left" style="background-image: url(${carouselImages[this.getLeftSlideIndex()].imageUrl})"></div>
-              <div class="hero-slide hero-slide-center" style="background-image: url(${carouselImages[this.getCenterSlideIndex()].imageUrl})"></div>
-              <div class="hero-slide hero-slide-right" style="background-image: url(${carouselImages[this.getRightSlideIndex()].imageUrl})"></div>
+              <div class="hero-slide hero-slide-left" style="background-image: url(${this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || ''})"></div>
+              <div class="hero-slide hero-slide-center" style="background-image: url(${this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || ''})"></div>
+              <div class="hero-slide hero-slide-right" style="background-image: url(${this.carouselImages[this.getRightSlideIndex()]?.imageUrl || ''})"></div>
             </div>
           </div>
         </div>
@@ -154,23 +170,25 @@ export class HeroSection {
     const contentArea = document.createElement('div');
     contentArea.className = 'hero-content';
 
-    // Navigation dots
+    // Navigation dots (only show if more than 1 slide)
     const navigation = document.createElement('div');
     navigation.className = 'hero-navigation';
     
-    const dotsContainer = document.createElement('div');
-    dotsContainer.className = 'hero-dots';
+    if (this.totalSlides > 1) {
+      const dotsContainer = document.createElement('div');
+      dotsContainer.className = 'hero-dots';
 
-    // Create dots
-    for (let i = 0; i < this.totalSlides; i++) {
-      const dot = document.createElement('button');
-      dot.className = `hero-dot ${i + 1 === this.currentSlide ? 'active' : ''}`;
-      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-      dot.addEventListener('click', () => this.goToSlide(i + 1));
-      dotsContainer.appendChild(dot);
+      // Create dots dynamically based on actual number of slides
+      for (let i = 0; i < this.totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = `hero-dot ${i + 1 === this.currentSlide ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => this.goToSlide(i + 1));
+        dotsContainer.appendChild(dot);
+      }
+
+      navigation.appendChild(dotsContainer);
     }
-
-    navigation.appendChild(dotsContainer);
 
     // Assemble the section
     this.element.appendChild(overlay);
@@ -180,7 +198,7 @@ export class HeroSection {
     } else {
       this.element.insertAdjacentHTML('beforeend', desktopContent);
       
-      // Add click handlers for desktop slides
+      // Add click handlers for desktop slides (keyboard navigation will still work)
       setTimeout(() => {
         const leftSlide = this.element.querySelector('.hero-slide-left');
         const rightSlide = this.element.querySelector('.hero-slide-right');
@@ -197,11 +215,18 @@ export class HeroSection {
     this.element.appendChild(contentArea);
     this.element.appendChild(navigation);
 
+    // Add keyboard navigation
+    if (this.totalSlides > 1) {
+      this.setupKeyboardNavigation();
+    }
+
     // Setup event listeners
     window.addEventListener('resize', () => this.handleResize());
 
-    // Start auto-advance
-    this.startAutoAdvance();
+    // Start auto-advance only if there are multiple slides
+    if (this.totalSlides > 1) {
+      this.startAutoAdvance();
+    }
 
     return this.element;
   }
@@ -210,5 +235,11 @@ export class HeroSection {
   destroy() {
     this.stopAutoAdvance();
     window.removeEventListener('resize', this.handleResize);
+    
+    // Clean up keyboard navigation
+    if (this.keyboardHandler) {
+      document.removeEventListener('keydown', this.keyboardHandler);
+      this.keyboardHandler = null;
+    }
   }
 } 

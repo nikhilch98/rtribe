@@ -35,10 +35,11 @@ class RTribeApp {
   constructor() {
     this.loadingState = new ReactLikeState(true);
     this.sectionsState = new ReactLikeState([]);
+    this.carouselImagesState = new ReactLikeState([]);
     
-    // Initialize components
+    // Initialize components (HeroSection will be initialized after data loads)
     this.loadingScreen = new LoadingScreen();
-    this.heroSection = new HeroSection();
+    this.heroSection = null;
     this.danceWeekSection = new DanceWeekSection();
     this.workshopsSection = new WorkshopsSection();
     this.showcaseSection = new ShowcaseSection();
@@ -68,16 +69,46 @@ class RTribeApp {
   fetchSections() {
     fetch("/api/sections")
       .then(response => response.json())
-      .then(data => {
-        this.sectionsState.set(data);
+      .then(config => {
+        // Extract sections data from config
+        const sectionsData = config.sections || [];
+        this.sectionsState.set(sectionsData);
+        
+        // Set carousel images from config data
+        const carouselImages = config.carouselImages || [
+          { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+          { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+          { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+        ];
+        this.carouselImagesState.set(carouselImages);
+        
+        // Initialize HeroSection with carousel images
+        if (!this.heroSection) {
+          this.heroSection = new HeroSection(carouselImages);
+        }
+        
         // Update workshops if app is already rendered
         if (!this.loadingState.get()) {
-          this.updateWorkshops(data);
+          this.updateWorkshops(sectionsData);
         }
       })
       .catch(error => {
         console.error("Error loading sections:", error);
         this.sectionsState.set([]);
+        
+        // Fallback carousel images
+        const fallbackCarousel = [
+          { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+          { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+          { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+        ];
+        this.carouselImagesState.set(fallbackCarousel);
+        
+        // Initialize HeroSection with fallback
+        if (!this.heroSection) {
+          this.heroSection = new HeroSection(fallbackCarousel);
+        }
+        
         // Update workshops if app is already rendered
         if (!this.loadingState.get()) {
           this.updateWorkshops([]);
@@ -110,6 +141,16 @@ class RTribeApp {
     const mainContent = document.createElement('main');
     
     // Render all sections in exact order from original
+    // Initialize HeroSection if not already done (with fallback data)
+    if (!this.heroSection) {
+      const fallbackCarousel = [
+        { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+        { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+        { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+      ];
+      this.heroSection = new HeroSection(fallbackCarousel);
+    }
+    
     mainContent.appendChild(this.heroSection.render());           // r3
     mainContent.appendChild(this.danceWeekSection.render());      // K3
     mainContent.appendChild(this.workshopsSection.render());     // L3 
@@ -148,6 +189,9 @@ class RTribeApp {
     }
     if (this.loadingScreen) {
       this.loadingScreen.hide();
+    }
+    if (this.heroSection) {
+      this.heroSection.destroy();
     }
   }
 }

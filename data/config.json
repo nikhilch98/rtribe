@@ -2,13 +2,42 @@
   "siteData": {
     "title": "Workshops"
   },
+  "carouselImages": [
+    {
+      "description": "Meet all our talented dance instructors",
+      "id": 1,
+      "imageUrl": "/static/assets/All_artist.jpg",
+      "title": "All Artists"
+    },
+    {
+      "description": "View the complete workshop schedule",
+      "id": 2,
+      "imageUrl": "/static/assets/schedule.jpg",
+      "title": "Schedule"
+    },
+    {
+      "description": "Workshop pricing information",
+      "id": 3,
+      "imageUrl": "/static/assets/fees1.jpg",
+      "title": "Fees"
+    }
+  ],
   "sections": [
     {
       "id": "workshops",
       "title": "NAMMA Dance Week Schedule",
       "items": [
         {
-          "id": "2",
+          "id": 3,
+          "artist": "Bhaskar",
+          "time": "5:00 PM - 7:00 PM",
+          "date": "June 8, 2025",
+          "style": "Contemporary",
+          "price": "\u20b97500",
+          "image": "/static/assets/Bhaskar suresh.png"
+        },
+        {
+          "id": 2,
           "artist": "Junaid",
           "time": "3:00 PM - 5:00 PM",
           "date": "June 8, 2025",
@@ -17,7 +46,16 @@
           "image": "/static/assets/Junaid solo.png"
         },
         {
-          "id": "1",
+          "id": 5,
+          "artist": "Siya",
+          "time": "7:00 PM - 9:00 PM",
+          "date": "June 9, 2025",
+          "style": "Semi Classicalll",
+          "price": "\u20b9750",
+          "image": "/static/assets/Siya.png"
+        },
+        {
+          "id": 1,
           "artist": "Bindu",
           "time": "11:00 AM - 1:00 PM",
           "date": "June 8, 2025",
@@ -26,16 +64,7 @@
           "image": "/static/assets/bindu.png"
         },
         {
-          "id": "3",
-          "artist": "Bhaskar",
-          "time": "5:00 PM - 7:00 PM",
-          "date": "June 8, 2025",
-          "style": "Contemporary",
-          "price": "\u20b9750",
-          "image": "/static/assets/Bhaskar suresh.png"
-        },
-        {
-          "id": "4",
+          "id": 4,
           "artist": "Yahvi",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 8, 2025",
@@ -44,16 +73,7 @@
           "image": "/static/assets/Yahvi.png"
         },
         {
-          "id": "5",
-          "artist": "Siya",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 9, 2025",
-          "style": "Semi Classical",
-          "price": "\u20b9750",
-          "image": "/static/assets/Siya.png"
-        },
-        {
-          "id": "6",
+          "id": 6,
           "artist": "Motley",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 10, 2025",
@@ -62,7 +82,7 @@
           "image": "/static/assets/motley.png"
         },
         {
-          "id": "7",
+          "id": 7,
           "artist": "Wehzan",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 11, 2025",
@@ -71,7 +91,7 @@
           "image": "/static/assets/Wehzan.png"
         },
         {
-          "id": "8",
+          "id": 8,
           "artist": "Junaid",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 12, 2025",
@@ -80,7 +100,7 @@
           "image": "/static/assets/Junaid solo.png"
         },
         {
-          "id": "9",
+          "id": 9,
           "artist": "Swady",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 13, 2025",
@@ -89,7 +109,7 @@
           "image": "/static/assets/Swady.png"
         },
         {
-          "id": "10",
+          "id": 10,
           "artist": "Samanth",
           "time": "11:00 AM - 1:00 PM",
           "date": "June 14, 2025",
@@ -98,7 +118,7 @@
           "image": "/static/assets/All_artist.jpg"
         },
         {
-          "id": "11",
+          "id": 11,
           "artist": "Motley",
           "time": "2:00 PM - 4:00 PM",
           "date": "June 14, 2025",
@@ -107,7 +127,7 @@
           "image": "/static/assets/motley.png"
         },
         {
-          "id": "12",
+          "id": 12,
           "artist": "Amisha",
           "time": "5:00 PM - 7:00 PM",
           "date": "June 14, 2025",
@@ -116,7 +136,7 @@
           "image": "/static/assets/All_artist.jpg"
         },
         {
-          "id": "13",
+          "id": 13,
           "artist": "Neharikha x Bhaskar",
           "time": "7:00 PM - 9:00 PM",
           "date": "June 14, 2025",
@@ -125,7 +145,7 @@
           "image": "/static/assets/All_artist.jpg"
         },
         {
-          "id": "14",
+          "id": 14,
           "artist": "Vaishnavi",
           "time": "12:00 PM - 2:00 PM",
           "date": "June 15, 2025",
@@ -134,6 +154,11 @@
           "image": "/static/assets/All_artist.jpg"
         }
       ]
+    },
+    {
+      "id": "section_1750979102016",
+      "title": "New Section",
+      "items": []
     }
   ]
 }
