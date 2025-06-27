@@ -16,10 +16,20 @@
       "title": "Schedule"
     },
     {
-      "description": "Workshop pricing information",
       "id": 3,
-      "imageUrl": "/static/assets/fees1.jpg",
-      "title": "Fees"
+      "title": "New Carousel Item",
+      "description": "Description for new carousel item",
+      "imageUrl": "/static/assets/fees1.jpg"
+    }
+  ],
+  "secondaryCarouselImages": [
+    {
+      "id": 2,
+      "imageUrl": "/static/assets/All_artist.jpg"
+    },
+    {
+      "id": 3,
+      "imageUrl": "/static/assets/Screenshot_2025-06-24_at_8.29.35_PM.png"
     }
   ],
   "sections": [

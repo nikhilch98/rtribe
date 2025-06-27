@@ -1,6 +1,7 @@
 // Main Application Entry Point - Exact Recreation
 import { LoadingScreen } from './components/LoadingScreen.js';
 import { HeroSection } from './components/HeroSection.js';
+import { SecondaryCarousel } from './components/SecondaryCarousel.js';
 import { DanceWeekSection } from './components/DanceWeekSection.js';
 import { WorkshopsSection } from './components/WorkshopsSection.js';
 import { ShowcaseSection } from './components/ShowcaseSection.js';
@@ -36,10 +37,12 @@ class RTribeApp {
     this.loadingState = new ReactLikeState(true);
     this.sectionsState = new ReactLikeState([]);
     this.carouselImagesState = new ReactLikeState([]);
+    this.secondaryCarouselImagesState = new ReactLikeState([]);
     
-    // Initialize components (HeroSection will be initialized after data loads)
+    // Initialize components (HeroSection and SecondaryCarousel will be initialized after data loads)
     this.loadingScreen = new LoadingScreen();
     this.heroSection = null;
+    this.secondaryCarousel = null;
     this.danceWeekSection = new DanceWeekSection();
     this.workshopsSection = new WorkshopsSection();
     this.showcaseSection = new ShowcaseSection();
@@ -82,9 +85,22 @@ class RTribeApp {
         ];
         this.carouselImagesState.set(carouselImages);
         
+        // Set secondary carousel images from config data
+        const secondaryCarouselImages = config.secondaryCarouselImages || [
+          { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+          { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+          { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+        ];
+        this.secondaryCarouselImagesState.set(secondaryCarouselImages);
+        
         // Initialize HeroSection with carousel images
         if (!this.heroSection) {
           this.heroSection = new HeroSection(carouselImages);
+        }
+        
+        // Initialize SecondaryCarousel with secondary carousel images
+        if (!this.secondaryCarousel) {
+          this.secondaryCarousel = new SecondaryCarousel(secondaryCarouselImages);
         }
         
         // Update workshops if app is already rendered
@@ -104,9 +120,22 @@ class RTribeApp {
         ];
         this.carouselImagesState.set(fallbackCarousel);
         
+        // Fallback secondary carousel
+        const fallbackSecondaryCarousel = [
+          { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+          { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+          { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+        ];
+        this.secondaryCarouselImagesState.set(fallbackSecondaryCarousel);
+        
         // Initialize HeroSection with fallback
         if (!this.heroSection) {
           this.heroSection = new HeroSection(fallbackCarousel);
+        }
+        
+        // Initialize SecondaryCarousel with fallback
+        if (!this.secondaryCarousel) {
+          this.secondaryCarousel = new SecondaryCarousel(fallbackSecondaryCarousel);
         }
         
         // Update workshops if app is already rendered
@@ -151,7 +180,18 @@ class RTribeApp {
       this.heroSection = new HeroSection(fallbackCarousel);
     }
     
+    // Initialize SecondaryCarousel if not already done (with fallback data)
+    if (!this.secondaryCarousel) {
+      const fallbackSecondaryCarousel = [
+        { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
+        { id: 2, imageUrl: '/static/assets/schedule.jpg' },
+        { id: 3, imageUrl: '/static/assets/fees1.jpg' }
+      ];
+      this.secondaryCarousel = new SecondaryCarousel(fallbackSecondaryCarousel);
+    }
+    
     mainContent.appendChild(this.heroSection.render());           // r3
+    mainContent.appendChild(this.secondaryCarousel.render());     // Secondary carousel
     mainContent.appendChild(this.danceWeekSection.render());      // K3
     mainContent.appendChild(this.workshopsSection.render());     // L3 
     mainContent.appendChild(this.showcaseSection.render());      // F3
@@ -192,6 +232,9 @@ class RTribeApp {
     }
     if (this.heroSection) {
       this.heroSection.destroy();
+    }
+    if (this.secondaryCarousel) {
+      this.secondaryCarousel.destroy();
     }
   }
 }

@@ -164,6 +164,39 @@ def save_carousel():
         'carousel_items_count': len(carousel_data)
     })
 
+@app.route('/api/secondary-carousel', methods=['POST'])
+@login_required
+def save_secondary_carousel():
+    """
+    Saves secondary carousel images data to the config file.
+    Preserves sections and other config data.
+    """
+    secondary_carousel_data = request.get_json()
+    if not isinstance(secondary_carousel_data, list):
+        return jsonify({'status': 'error', 'message': 'Invalid data format. Expected a list of secondary carousel items.'}), 400
+    
+    # Read current config to preserve other data
+    config = read_config()
+    
+    # Update secondary carousel images
+    config['secondaryCarouselImages'] = secondary_carousel_data
+    
+    # Ensure other required fields exist
+    if 'siteData' not in config:
+        config['siteData'] = {'title': 'Workshops'}
+    if 'sections' not in config:
+        config['sections'] = []
+    if 'carouselImages' not in config:
+        config['carouselImages'] = []
+    
+    write_config(config)
+    
+    return jsonify({
+        'status': 'success', 
+        'message': 'Secondary carousel saved successfully.', 
+        'secondary_carousel_items_count': len(secondary_carousel_data)
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8004)
