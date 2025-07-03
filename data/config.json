@@ -4,171 +4,212 @@
   },
   "carouselImages": [
     {
-      "description": "Meet all our talented dance instructors",
-      "id": 1,
-      "imageUrl": "/static/assets/All_artist.jpg",
-      "title": "All Artists"
+      "description": "Description for new carousel item",
+      "id": 3,
+      "imageUrl": "/static/assets/fees1.jpg",
+      "title": "New Carousel Item",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
     },
     {
       "description": "View the complete workshop schedule",
       "id": 2,
       "imageUrl": "/static/assets/schedule.jpg",
-      "title": "Schedule"
+      "title": "Schedule",
+      "aspectRatio": 1.78,
+      "aspectRatioCategory": "16/9"
     },
     {
-      "id": 3,
-      "title": "New Carousel Item",
-      "description": "Description for new carousel item",
-      "imageUrl": "/static/assets/fees1.jpg"
+      "description": "Meet all our talented dance instructors",
+      "id": 1,
+      "imageUrl": "/static/assets/All_artist.jpg",
+      "title": "All Artists",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
     }
   ],
   "secondaryCarouselImages": [
     {
       "id": 2,
-      "imageUrl": "/static/assets/All_artist.jpg"
+      "imageUrl": "/static/assets/20250625_164102_1.jpg",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
     },
     {
       "id": 3,
-      "imageUrl": "/static/assets/Screenshot_2025-06-24_at_8.29.35_PM.png"
+      "imageUrl": "/static/assets/20250625_172352.jpg",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
+    },
+    {
+      "id": 4,
+      "imageUrl": "/static/assets/20250625_175540.jpg",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
+    },
+    {
+      "id": 5,
+      "imageUrl": "/static/assets/20250625_175820.jpg",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
+    },
+    {
+      "id": 6,
+      "imageUrl": "/static/assets/20250626_191029.jpg",
+      "aspectRatio": 0.8,
+      "aspectRatioCategory": "3/4"
     }
   ],
   "sections": [
     {
-      "id": "workshops",
-      "title": "NAMMA Dance Week Schedule",
+      "id": "section_1750979102016",
+      "title": "Instructors",
       "items": [
         {
-          "id": 3,
-          "artist": "Bhaskar",
-          "time": "5:00 PM - 7:00 PM",
-          "date": "June 8, 2025",
-          "style": "Contemporary",
-          "price": "\u20b97500",
-          "image": "/static/assets/Bhaskar suresh.png"
+          "id": 1,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/20250701_004008.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 2,
-          "artist": "Junaid",
-          "time": "3:00 PM - 5:00 PM",
-          "date": "June 8, 2025",
-          "style": "Choreography",
-          "price": "\u20b9750",
-          "image": "/static/assets/Junaid solo.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/20250701_005808.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
-          "id": 5,
-          "artist": "Siya",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 9, 2025",
-          "style": "Semi Classicalll",
-          "price": "\u20b9750",
-          "image": "/static/assets/Siya.png"
-        },
-        {
-          "id": 1,
-          "artist": "Bindu",
-          "time": "11:00 AM - 1:00 PM",
-          "date": "June 8, 2025",
-          "style": "Belly Animation",
-          "price": "\u20b9750",
-          "image": "/static/assets/bindu.png"
+          "id": 3,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/20250701_100005.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 4,
-          "artist": "Yahvi",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 8, 2025",
-          "style": "Heelssss",
-          "price": "\u20b9750",
-          "image": "/static/assets/Yahvi.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/20250702_012143.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
+        },
+        {
+          "id": 5,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Amulya.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 6,
-          "artist": "Motley",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 10, 2025",
-          "style": "Salsa",
-          "price": "\u20b9750",
-          "image": "/static/assets/motley.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Bhaskar.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 7,
-          "artist": "Wehzan",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 11, 2025",
-          "style": "Open Style",
-          "price": "\u20b9750",
-          "image": "/static/assets/Wehzan.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Junaid.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 8,
-          "artist": "Junaid",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 12, 2025",
-          "style": "Hip Hop",
-          "price": "\u20b9750",
-          "image": "/static/assets/Junaid solo.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Siya.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 9,
-          "artist": "Swady",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 13, 2025",
-          "style": "Afro",
-          "price": "\u20b9750",
-          "image": "/static/assets/Swady.png"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Swady.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 10,
-          "artist": "Samanth",
-          "time": "11:00 AM - 1:00 PM",
-          "date": "June 14, 2025",
-          "style": "Popping",
-          "price": "\u20b9750",
-          "image": "/static/assets/All_artist.jpg"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Wehzan.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         },
         {
           "id": 11,
-          "artist": "Motley",
-          "time": "2:00 PM - 4:00 PM",
-          "date": "June 14, 2025",
-          "style": "Bachata",
-          "price": "\u20b9750",
-          "image": "/static/assets/motley.png"
-        },
-        {
-          "id": 12,
-          "artist": "Amisha",
-          "time": "5:00 PM - 7:00 PM",
-          "date": "June 14, 2025",
-          "style": "Choreography",
-          "price": "\u20b9750",
-          "image": "/static/assets/All_artist.jpg"
-        },
-        {
-          "id": 13,
-          "artist": "Neharikha x Bhaskar",
-          "time": "7:00 PM - 9:00 PM",
-          "date": "June 14, 2025",
-          "style": "Jazz Funk",
-          "price": "\u20b9750",
-          "image": "/static/assets/All_artist.jpg"
-        },
-        {
-          "id": 14,
-          "artist": "Vaishnavi",
-          "time": "12:00 PM - 2:00 PM",
-          "date": "June 15, 2025",
-          "style": "Celebrity Workshop",
-          "price": "\u20b9750",
-          "image": "/static/assets/All_artist.jpg"
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "image": "/static/assets/Yahvi.jpg",
+          "aspectRatio": 0.8,
+          "aspectRatioCategory": "3/4"
         }
       ]
+    }
+  ],
+  "testimonialVideos": [
+    {
+      "description": "Students showing their moves in our popular hip hop class",
+      "id": 1,
+      "thumbnail": "/static/assets/20250625_164102_1.jpg",
+      "title": "Hip Hop Workshop Highlights",
+      "url": "/static/assets/videos/Video-705.mp4"
     },
     {
-      "id": "section_1750979102016",
-      "title": "New Section",
-      "items": []
+      "description": "Beautiful contemporary expressions from our talented students",
+      "id": 2,
+      "thumbnail": "/static/assets/20250625_172352.jpg",
+      "title": "Contemporary Dance Session",
+      "url": "/static/assets/videos/dance-video-2.mp4"
+    },
+    {
+      "description": "High-energy Bollywood choreography in action",
+      "id": 3,
+      "thumbnail": "/static/assets/20250625_175540.jpg",
+      "title": "Bollywood Dance Energy",
+      "url": "/static/assets/videos/dance-video-3.mp4"
     }
   ]
 }

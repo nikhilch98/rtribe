@@ -82,99 +82,136 @@ export class WorkshopsSection {
     const imageContainer = document.createElement('div');
     imageContainer.className = 'workshop-image-container';
 
-    // Workshop image - R3 from original
+    // Workshop image - R3 from original (always required)
     const image = document.createElement('img');
     image.className = 'workshop-image';
     image.src = workshop.image;
-    image.alt = workshop.style;
+    image.alt = workshop.style || 'Workshop';
     image.loading = 'lazy';
 
     imageContainer.appendChild(image);
     card.appendChild(imageContainer);
 
-    // Workshop content - O3 from original
+    // Check if we have any non-image content to display
+    const hasStyle = workshop.style && workshop.style.trim() !== '';
+    const hasArtist = workshop.artist && workshop.artist.trim() !== '';
+    const hasDate = workshop.date && workshop.date.trim() !== '';
+    const hasTime = workshop.time && workshop.time.trim() !== '';
+    const hasPrice = workshop.price && workshop.price.trim() !== '';
+
+    // If all fields except image are null/empty, show only the image
+    if (!hasStyle && !hasArtist && !hasDate && !hasTime && !hasPrice) {
+      // Make the image container full height when no content is present
+      imageContainer.style.height = '100%';
+      imageContainer.style.flex = '1';
+      return card;
+    }
+
+    // Workshop content - O3 from original (only if we have content to show)
     const content = document.createElement('div');
     content.className = 'workshop-content';
 
-    // Workshop header - z3 from original
-    const header = document.createElement('div');
-    header.className = 'workshop-header';
+    // Workshop header - z3 from original (only if style or artist exists)
+    if (hasStyle || hasArtist) {
+      const header = document.createElement('div');
+      header.className = 'workshop-header';
 
-    // Workshop style - V3 from original
-    const style = document.createElement('h3');
-    style.className = 'workshop-style';
-    style.textContent = workshop.style;
-
-    // Workshop artist - _3 from original
-    const artist = document.createElement('p');
-    artist.className = 'workshop-artist';
-    artist.innerHTML = `by ${workshop.artist}`;
-
-    header.appendChild(style);
-    header.appendChild(artist);
-
-    // Workshop details - B3 from original
-    const details = document.createElement('div');
-    details.className = 'workshop-details';
-
-    // Workshop info container - U3 from original
-    const infoContainer = document.createElement('div');
-    infoContainer.className = 'workshop-info-container';
-
-    // Date info - Dp from original with p3 icon
-    const dateInfo = document.createElement('div');
-    dateInfo.className = 'workshop-info-item';
-    const dateIcon = document.createElement('span');
-    dateIcon.className = 'workshop-icon';
-    dateIcon.textContent = '📅';
-    const dateText = document.createElement('span');
-    dateText.textContent = workshop.date;
-    dateInfo.appendChild(dateIcon);
-    dateInfo.appendChild(dateText);
-
-    // Time info - Dp from original with g3 icon
-    const timeInfo = document.createElement('div');
-    timeInfo.className = 'workshop-info-item';
-    const timeIcon = document.createElement('span');
-    timeIcon.className = 'workshop-icon';
-    timeIcon.textContent = '🕐';
-    const timeText = document.createElement('span');
-    timeText.textContent = workshop.time;
-    timeInfo.appendChild(timeIcon);
-    timeInfo.appendChild(timeText);
-
-    infoContainer.appendChild(dateInfo);
-    infoContainer.appendChild(timeInfo);
-
-    // Workshop footer - j3 from original
-    const footer = document.createElement('div');
-    footer.className = 'workshop-footer';
-
-    // Workshop price - N3 from original
-    const price = document.createElement('div');
-    price.className = 'workshop-price';
-    price.textContent = workshop.price;
-
-    // Register button - H3 from original with onClick: () => t(e)
-    const registerButton = document.createElement('button');
-    registerButton.className = 'workshop-register-button';
-    registerButton.textContent = 'Register Now';
-    registerButton.addEventListener('click', () => {
-      if (window.registerForWorkshop) {
-        window.registerForWorkshop(workshop);
+      // Workshop style - V3 from original (only if present)
+      if (hasStyle) {
+        const style = document.createElement('h3');
+        style.className = 'workshop-style';
+        style.textContent = workshop.style;
+        header.appendChild(style);
       }
-    });
 
-    footer.appendChild(price);
-    footer.appendChild(registerButton);
+      // Workshop artist - _3 from original (only if present)
+      if (hasArtist) {
+        const artist = document.createElement('p');
+        artist.className = 'workshop-artist';
+        artist.innerHTML = `by ${workshop.artist}`;
+        header.appendChild(artist);
+      }
 
-    details.appendChild(infoContainer);
-    details.appendChild(footer);
+      content.appendChild(header);
+    }
 
-    content.appendChild(header);
-    content.appendChild(details);
+    // Workshop details - B3 from original (only if we have details to show)
+    if (hasDate || hasTime || hasPrice) {
+      const details = document.createElement('div');
+      details.className = 'workshop-details';
 
-    card.appendChild(content);
+      // Workshop info container - U3 from original (only if date or time exists)
+      if (hasDate || hasTime) {
+        const infoContainer = document.createElement('div');
+        infoContainer.className = 'workshop-info-container';
+
+        // Date info - only if present
+        if (hasDate) {
+          const dateInfo = document.createElement('div');
+          dateInfo.className = 'workshop-info-item';
+          const dateIcon = document.createElement('span');
+          dateIcon.className = 'workshop-icon';
+          dateIcon.textContent = '📅';
+          const dateText = document.createElement('span');
+          dateText.textContent = workshop.date;
+          dateInfo.appendChild(dateIcon);
+          dateInfo.appendChild(dateText);
+          infoContainer.appendChild(dateInfo);
+        }
+
+        // Time info - only if present
+        if (hasTime) {
+          const timeInfo = document.createElement('div');
+          timeInfo.className = 'workshop-info-item';
+          const timeIcon = document.createElement('span');
+          timeIcon.className = 'workshop-icon';
+          timeIcon.textContent = '🕐';
+          const timeText = document.createElement('span');
+          timeText.textContent = workshop.time;
+          timeInfo.appendChild(timeIcon);
+          timeInfo.appendChild(timeText);
+          infoContainer.appendChild(timeInfo);
+        }
+
+        details.appendChild(infoContainer);
+      }
+
+      // Workshop footer - j3 from original (only if price exists or we want to show register button)
+      if (hasPrice || (hasStyle && hasArtist && hasDate && hasTime)) {
+        const footer = document.createElement('div');
+        footer.className = 'workshop-footer';
+
+        // Workshop price - N3 from original (only if present)
+        if (hasPrice) {
+          const price = document.createElement('div');
+          price.className = 'workshop-price';
+          price.textContent = workshop.price;
+          footer.appendChild(price);
+        }
+
+        // Register button - H3 from original (only show if we have enough info for registration)
+        if (hasStyle && hasArtist && hasDate && hasTime) {
+          const registerButton = document.createElement('button');
+          registerButton.className = 'workshop-register-button';
+          registerButton.textContent = 'Register Now';
+          registerButton.addEventListener('click', () => {
+            if (window.registerForWorkshop) {
+              window.registerForWorkshop(workshop);
+            }
+          });
+          footer.appendChild(registerButton);
+        }
+
+        details.appendChild(footer);
+      }
+
+      content.appendChild(details);
+    }
+
+    // Only append content if we actually have content to show
+    if (content.children.length > 0) {
+      card.appendChild(content);
+    }
 
     return card;
   }

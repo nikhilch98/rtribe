@@ -72,6 +72,22 @@
             padding: 1rem 1.5rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .section-editor.sortable-chosen {
+            transform: scale(1.02) rotate(0.5deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary-purple);
+            z-index: 1000;
+        }
+
+        .section-editor.sortable-ghost {
+            opacity: 0.3;
+            transform: scale(0.95);
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.1), rgba(155, 89, 182, 0.1));
+            border: 2px dashed var(--primary-purple);
         }
 
         .section-header {
@@ -79,9 +95,39 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
+            padding: 0.75rem;
             border-bottom: 1px solid var(--border-color);
             cursor: move;
+            border-radius: 8px 8px 0 0;
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.05), rgba(155, 89, 182, 0.05));
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .section-header::before {
+            content: '⋮⋮';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-purple);
+            font-size: 1.2em;
+            opacity: 0.5;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.1), rgba(155, 89, 182, 0.1));
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(106, 13, 173, 0.1);
+        }
+
+        .section-header:hover::before {
+            opacity: 0.8;
+        }
+
+        .section-editor.sortable-chosen .section-header {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.2), rgba(155, 89, 182, 0.2));
+            transform: rotate(1deg);
         }
 
         .section-title-input {
@@ -91,10 +137,16 @@
             color: var(--dark-purple);
             border: none;
             background: transparent;
-            padding: 0;
+            padding: 0 0 0 30px;
             width: 60%;
+            margin-left: 20px;
         }
-        .section-title-input:focus { outline: none; }
+        .section-title-input:focus { 
+            outline: none;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 4px 4px 4px 34px;
+        }
 
         .item-list { list-style: none; padding: 0; }
 
@@ -104,34 +156,91 @@
             gap: 1.5rem;
             padding: 1rem 0;
             align-items: stretch;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .workshop-cards-grid.sortable-active {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.02), rgba(155, 89, 182, 0.02));
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: inset 0 0 20px rgba(106, 13, 173, 0.1);
+            position: relative;
         }
 
         /* Admin Workshop Cards - Fixed height for consistency across all carousel items */
         .admin-workshop-card {
-            background: var(--primary-white);
-            border-radius: 12px;
+            height: 450px; /* Fixed height for all cards */
+            border: 2px solid #ddd;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            cursor: grab;
-            position: relative;
-            border: 2px solid transparent;
-            pointer-events: auto;
-            height: 450px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            cursor: grab;
+            position: relative;
+            transform-origin: center;
         }
 
-        .admin-workshop-card:active { cursor: grabbing; }
-        .admin-workshop-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        .admin-workshop-card:active, 
+        .admin-workshop-card.sortable-chosen { 
+            cursor: grabbing; 
+            transform: rotate(5deg);
+            z-index: 1000;
+        }
+
+        .admin-workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-color: var(--primary-purple);
+        }
+
+        .admin-workshop-card.sortable-ghost {
+            opacity: 0.4;
+            background: var(--light-purple);
+            border: 2px dashed var(--dark-purple);
+        }
+
+        .admin-workshop-card.sortable-drag {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transform: rotate(5deg) scale(1.02);
+            z-index: 1000;
+        }
+
+        /* Smooth animation for all cards during rearrangement */
+        .admin-workshop-card:not(.sortable-chosen):not(.sortable-ghost) {
+            animation: smoothMove 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes smoothMove {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+            100% { transform: scale(1); }
+        }
+
+        /* Pulse effect for drop zone indication */
+        .workshop-cards-grid.sortable-active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(106, 13, 173, 0.1) 0%, transparent 70%);
+            border-radius: 12px;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.01); }
         }
 
         .admin-workshop-card.editing {
             border-color: var(--primary-purple);
-            box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.2);
+            box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.1);
         }
 
         .admin-card-image {
@@ -234,6 +343,12 @@
             pointer-events: auto;
         }
 
+        .admin-card-actions .btn {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            touch-action: none;
+        }
+
         .admin-workshop-card:hover .admin-card-actions {
             opacity: 1;
         }
@@ -320,9 +435,28 @@
         #add-section-btn { margin-top: 1rem; }
 
         .sortable-ghost {
-            opacity: 0.4;
-            background: var(--light-purple);
+            opacity: 0.3;
+            background: linear-gradient(135deg, var(--light-purple), var(--primary-purple));
             border: 2px dashed var(--dark-purple);
+            transform: scale(0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(106, 13, 173, 0.3);
+        }
+
+        .sortable-chosen {
+            opacity: 1;
+            transform: rotate(3deg) scale(1.05);
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: none;
+        }
+
+        .sortable-drag {
+            opacity: 0.8;
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--primary-purple);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         /* --- Responsive Design --- */
@@ -409,6 +543,46 @@
                 padding: 1rem;
             }
         }
+
+        /* Placeholder text styling for nullable fields */
+        .admin-card-content [data-field] {
+            transition: all 0.2s ease;
+        }
+
+        .admin-card-content [data-field]:contains('[Click to add') {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Style for different field types */
+        .admin-card-style:contains('[Click to add style]'),
+        .admin-card-artist:contains('[Click to add artist]'),
+        .admin-card-detail-text:contains('[Click to add date]'),
+        .admin-card-detail-text:contains('[Click to add time]'),
+        .admin-card-price:contains('[Click to add price]') {
+            color: #999 !important;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* Required field indicator for image */
+        .admin-card-image::after {
+            content: '📁 Image Required';
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .admin-card-image:hover::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -420,10 +594,21 @@
         
         <div class="admin-help-text" style="margin-bottom: 2rem;">
             <strong>💡 How to use:</strong> 
-            <strong>Double-click</strong> image URLs to edit them • 
-            <strong>Drag cards</strong> to reorder • 
+            <strong>Drag ⋮⋮ section headers</strong> to reorder sections • 
+            <strong>Drag workshop cards</strong> to reorder within sections • 
+            <strong>Double-click</strong> text fields to edit • 
             <strong>Click 📁</strong> to upload images • 
             <strong>Click 🗑️</strong> to delete items
+        </div>
+
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-purple);">
+            <strong>📝 Workshop Fields:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>Image:</strong> Required - Upload or paste image URL</li>
+                <li><strong>Style, Artist, Date, Time, Price:</strong> Optional - Leave empty to hide from frontend</li>
+                <li><strong>Empty fields:</strong> Show placeholder text "[Click to add...]" and won't appear on website</li>
+                <li><strong>Image-only cards:</strong> Will display only the image without text content</li>
+            </ul>
         </div>
 
         <!-- Carousel Management Section -->
@@ -450,6 +635,18 @@
             <div id="secondary-carousel-items-grid" class="workshop-cards-grid"></div>
         </div>
 
+        <!-- Testimonial Videos Management Section -->
+        <div class="section-editor">
+            <div class="section-header">
+                <h2 style="margin: 0; color: var(--dark-purple);">🎬 Testimonial Videos Management</h2>
+                <div class="section-actions">
+                    <button id="add-testimonial-video-btn" class="btn btn-primary">+ Add Video</button>
+                    <button id="save-testimonial-videos-btn" class="btn btn-success">Save Video Changes</button>
+                </div>
+            </div>
+            <div id="testimonial-videos-grid" class="workshop-cards-grid"></div>
+        </div>
+
         <div id="sections-container"></div>
         <button id="add-section-btn" class="btn btn-primary">+ Add New Section</button>
     </div>
@@ -465,9 +662,13 @@
     const secondaryCarouselItemsGrid = document.getElementById('secondary-carousel-items-grid');
     const addSecondaryCarouselItemBtn = document.getElementById('add-secondary-carousel-item-btn');
     const saveSecondaryCarouselBtn = document.getElementById('save-secondary-carousel-btn');
+    const testimonialVideosGrid = document.getElementById('testimonial-videos-grid');
+    const addTestimonialVideoBtn = document.getElementById('add-testimonial-video-btn');
+    const saveTestimonialVideosBtn = document.getElementById('save-testimonial-videos-btn');
     let sectionsData = [];
     let carouselData = [];
     let secondaryCarouselData = [];
+    let testimonialVideosData = [];
 
     // --- Data Fetching and Saving ---
     async function fetchSections() {
@@ -488,9 +689,14 @@
             secondaryCarouselData = config.secondaryCarouselImages || [];
             console.log('Loaded secondary carousel data:', secondaryCarouselData);
             
+            // Extract testimonial videos data from config
+            testimonialVideosData = config.testimonialVideos || [];
+            console.log('Loaded testimonial videos data:', testimonialVideosData);
+            
             renderAllSections();
             renderCarouselItems();
             renderSecondaryCarouselItems();
+            renderTestimonialVideos();
         } catch (error) {
             console.error('Error fetching sections:', error);
             alert('Could not load section data. Please refresh.');
@@ -500,15 +706,25 @@
     async function saveAllChanges() {
         // Rebuild the sectionsData from the DOM to ensure order and content is correct
         const updatedSections = [];
-        document.querySelectorAll('.section-editor').forEach(sectionEl => {
+        document.querySelectorAll('.section-editor[data-id]').forEach(sectionEl => {
             const sectionId = sectionEl.dataset.id;
-            const sectionTitle = sectionEl.querySelector('.section-title-input').value;
+            const sectionTitleInput = sectionEl.querySelector('.section-title-input');
+            
+            // Skip if this is a carousel section (no section-title-input)
+            if (!sectionTitleInput) return;
+            
+            const sectionTitle = sectionTitleInput.value;
             const items = [];
             sectionEl.querySelectorAll('.admin-workshop-card').forEach(itemEl => {
                 const item = { id: parseInt(itemEl.dataset.id, 10) };
                 itemEl.querySelectorAll('input[type="hidden"]').forEach(input => {
                     if (input.name && input.name !== 'id') {
-                        item[input.name] = input.value;
+                        // Convert empty strings to null for all fields except image
+                        if (input.name === 'image') {
+                            item[input.name] = input.value || '/static/assets/All_artist.jpg';
+                        } else {
+                            item[input.name] = input.value.trim() || null;
+                        }
                     }
                 });
                 items.push(item);
@@ -516,6 +732,8 @@
             updatedSections.push({ id: sectionId, title: sectionTitle, items: items });
         });
 
+        console.log('Attempting to save sections:', updatedSections);
+        
         try {
             // Send just the sections array as the API expects
             const response = await fetch('/api/sections', {
@@ -523,14 +741,23 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedSections)
             });
-            if (!response.ok) throw new Error('Failed to save changes');
+            
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server response:', errorText);
+                throw new Error(`Failed to save changes: ${response.status} ${response.statusText}`);
+            }
+            
             const result = await response.json();
             console.log('Save result:', result);
             alert('Changes saved successfully!');
             sectionsData = updatedSections; // Update local data
         } catch (error) {
             console.error('Error saving changes:', error);
-            alert('Failed to save changes. Please try again.');
+            alert(`Failed to save changes: ${error.message}`);
         }
     }
 
@@ -541,7 +768,10 @@
             const sectionEl = createSectionElement(section);
             sectionsContainer.appendChild(sectionEl);
         });
-        initSortable();
+        // Delay initSortable to ensure DOM is fully rendered
+        setTimeout(() => {
+            initSortable();
+        }, 100);
     }
 
     function createSectionElement(section) {
@@ -603,11 +833,11 @@
             const newItemId = Math.max(0, ...currentItems.map(i => parseInt(i.dataset.id, 10))) + 1;
             const newItem = { 
                 id: newItemId, 
-                artist: 'New Artist', 
-                time: '12:00 PM - 2:00 PM', 
-                date: 'June 15, 2025', 
-                style: 'New Style', 
-                price: '₹750', 
+                artist: null, 
+                time: null, 
+                date: null, 
+                style: null, 
+                price: null, 
                 image: '/static/assets/All_artist.jpg' 
             };
             
@@ -617,6 +847,11 @@
             
             const itemEl = createItemElement(newItem, section.id);
             cardsGrid.appendChild(itemEl);
+            
+            // Re-initialize sortable after adding new item
+            setTimeout(() => {
+                initSortable();
+            }, 50);
         });
 
         sectionEl.querySelector('.save-all-btn').addEventListener('click', saveAllChanges);
@@ -630,7 +865,7 @@
         itemEl.dataset.id = item.id;
         
         itemEl.innerHTML = `
-            <div class="admin-card-image" style="background-image: url('${item.image || '/static/assets/All_artist.jpg'}')">
+            <div class="admin-card-image" style="background-image: url('${item.image || '/static/assets/All_artist.jpg'}'); aspect-ratio: ${item.aspectRatioCategory || '3/4'}">
                 <div class="admin-card-actions">
                     <button type="button" class="btn btn-primary upload-image-btn" title="Upload Image" style="margin-right: 5px;">📁</button>
                     <button type="button" class="btn btn-danger delete-item-btn" title="Delete Workshop" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
@@ -639,22 +874,22 @@
             </div>
             
             <div class="admin-card-content">
-                <div class="admin-card-style" data-field="style">${item.style || 'Workshop Style'}</div>
-                <div class="admin-card-artist" data-field="artist">by ${item.artist || 'Artist Name'}</div>
+                <div class="admin-card-style" data-field="style">${item.style || '[Click to add style]'}</div>
+                <div class="admin-card-artist" data-field="artist">by ${item.artist || '[Click to add artist]'}</div>
                 
                 <div class="admin-card-details">
                     <div class="admin-card-detail">
                         <span>📅</span>
-                        <span class="admin-card-detail-text" data-field="date">${item.date || 'Date'}</span>
+                        <span class="admin-card-detail-text" data-field="date">${item.date || '[Click to add date]'}</span>
                     </div>
                     <div class="admin-card-detail">
                         <span>⏰</span>
-                        <span class="admin-card-detail-text" data-field="time">${item.time || 'Time'}</span>
+                        <span class="admin-card-detail-text" data-field="time">${item.time || '[Click to add time]'}</span>
                     </div>
                 </div>
                 
                 <div class="admin-card-footer">
-                    <div class="admin-card-price" data-field="price">${item.price || '₹750'}</div>
+                    <div class="admin-card-price" data-field="price">${item.price || '[Click to add price]'}</div>
                     <button class="btn btn-primary" style="pointer-events: none;">Register Now</button>
                 </div>
             </div>
@@ -666,7 +901,9 @@
             <input type="hidden" name="date" value="${item.date || ''}">
             <input type="hidden" name="style" value="${item.style || ''}">
             <input type="hidden" name="price" value="${item.price || ''}">
-            <input type="hidden" name="image" value="${item.image || ''}">
+            <input type="hidden" name="image" value="${item.image || '/static/assets/All_artist.jpg'}">
+            <input type="hidden" name="aspectRatio" value="${item.aspectRatio || ''}">
+            <input type="hidden" name="aspectRatioCategory" value="${item.aspectRatioCategory || ''}">
         `;
 
         // --- Double-click editing functionality ---
@@ -674,9 +911,14 @@
         editableElements.forEach(element => {
             element.addEventListener('dblclick', () => {
                 const field = element.dataset.field;
-                const currentValue = field === 'artist' ? 
+                let currentValue = field === 'artist' ? 
                     element.textContent.replace('by ', '') : 
                     element.textContent;
+                
+                // If it's placeholder text, start with empty value
+                if (currentValue.includes('[Click to add')) {
+                    currentValue = '';
+                }
                 
                 const input = document.createElement('input');
                 input.className = 'editable-field';
@@ -692,23 +934,29 @@
                 // Save on blur or enter
                 const saveEdit = () => {
                     const newValue = input.value.trim();
-                    if (newValue) {
-                        // Update display
-                        if (field === 'artist') {
-                            element.textContent = 'by ' + newValue;
-                        } else {
-                            element.textContent = newValue;
-                        }
-                        
-                        // Update hidden input
-                        const hiddenInput = itemEl.querySelector(`input[name="${field}"]`);
-                        if (hiddenInput) hiddenInput.value = newValue;
-                        
-                        // Update image if it's the image field
-                        if (field === 'image') {
-                            const cardImage = itemEl.querySelector('.admin-card-image');
-                            cardImage.style.backgroundImage = `url('${newValue}')`;
-                        }
+                    
+                    // For image field, require a value
+                    if (field === 'image' && !newValue) {
+                        alert('Image URL is required');
+                        input.focus();
+                        return;
+                    }
+                    
+                    // Update display (allow empty values for non-image fields)
+                    if (field === 'artist') {
+                        element.textContent = newValue ? 'by ' + newValue : 'by [Click to add artist]';
+                    } else {
+                        element.textContent = newValue || `[Click to add ${field}]`;
+                    }
+                    
+                    // Update hidden input (store empty string for null values)
+                    const hiddenInput = itemEl.querySelector(`input[name="${field}"]`);
+                    if (hiddenInput) hiddenInput.value = newValue;
+                    
+                    // Update image if it's the image field
+                    if (field === 'image' && newValue) {
+                        const cardImage = itemEl.querySelector('.admin-card-image');
+                        cardImage.style.backgroundImage = `url('${newValue}')`;
                     }
                     
                     input.remove();
@@ -813,6 +1061,20 @@
                     const hiddenInput = itemEl.querySelector('input[name="image"]');
                     if (hiddenInput) hiddenInput.value = result.imageUrl;
                     
+                    // Update aspect ratio data in DOM if available
+                    if (result.aspectRatio && result.aspectRatioCategory) {
+                        // Update hidden inputs for aspect ratio
+                        const aspectRatioInput = itemEl.querySelector('input[name="aspectRatio"]');
+                        const aspectRatioCategoryInput = itemEl.querySelector('input[name="aspectRatioCategory"]');
+                        if (aspectRatioInput) aspectRatioInput.value = result.aspectRatio;
+                        if (aspectRatioCategoryInput) aspectRatioCategoryInput.value = result.aspectRatioCategory;
+                        
+                        console.log(`Updated aspect ratio for ${result.imageUrl}: ${result.aspectRatioCategory}`);
+                        
+                        // Apply aspect ratio to the preview image immediately
+                        cardImage.style.aspectRatio = result.aspectRatioCategory;
+                    }
+                    
                     uploadBtn.textContent = '✅';
                     setTimeout(() => {
                         uploadBtn.textContent = '📁';
@@ -841,52 +1103,210 @@
         const newSection = { id: newSectionId, title: 'New Section', items: [] };
         const sectionEl = createSectionElement(newSection);
         sectionsContainer.appendChild(sectionEl);
+        
+        // Re-initialize sortable after adding new section
+        setTimeout(() => {
+            initSortable();
+        }, 50);
     });
 
     function initSortable() {
+        // Clear any existing sortable instances first
+        document.querySelectorAll('.workshop-cards-grid').forEach(grid => {
+            if (grid._sortable) {
+                grid._sortable.destroy();
+            }
+        });
+        
+        if (sectionsContainer._sortable) {
+            sectionsContainer._sortable.destroy();
+        }
+        if (carouselItemsGrid && carouselItemsGrid._sortable) {
+            carouselItemsGrid._sortable.destroy();
+        }
+        if (secondaryCarouselItemsGrid && secondaryCarouselItemsGrid._sortable) {
+            secondaryCarouselItemsGrid._sortable.destroy();
+        }
+        if (testimonialVideosGrid && testimonialVideosGrid._sortable) {
+            testimonialVideosGrid._sortable.destroy();
+        }
+
+        // Initialize section reordering (sections container)
         new Sortable(sectionsContainer, {
-            animation: 150,
+            animation: 400,
+            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
             handle: '.section-header',
-            ghostClass: 'sortable-ghost'
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            draggable: '.section-editor',
+            swapThreshold: 0.65,
+            swap: true,
+            onStart: function(evt) {
+                console.log('Started dragging section');
+                evt.item.style.zIndex = '1000';
+            },
+            onEnd: function(evt) {
+                console.log('Finished dragging section');
+                evt.item.style.zIndex = '';
+                // Auto-save when section order changes
+                saveAllChanges();
+            }
         });
 
+        // Initialize workshop cards dragging within sections
         document.querySelectorAll('.workshop-cards-grid').forEach(cardsGrid => {
+            // Skip carousel grids, they'll be handled separately
+            if (cardsGrid.id === 'carousel-items-grid' || cardsGrid.id === 'secondary-carousel-items-grid' || cardsGrid.id === 'testimonial-videos-grid') {
+                return;
+            }
+            
             new Sortable(cardsGrid, {
-                animation: 150,
+                animation: 300,
+                easing: "cubic-bezier(0.4, 0, 0.2, 1)",
                 ghostClass: 'sortable-ghost',
-                handle: '.admin-card-content', // Only allow dragging from the content area, not buttons
-                filter: '.admin-help-text, .admin-card-actions, .btn', // Don't allow dragging from buttons or help text
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag',
+                draggable: '.admin-workshop-card',
+                filter: '.admin-help-text',
                 preventOnFilter: false,
+                forceFallback: false,
+                fallbackTolerance: 0,
+                swapThreshold: 0.65,
+                swap: true,
+                onStart: function(evt) {
+                    console.log('Started dragging workshop card');
+                    // Add visual feedback to the container
+                    evt.from.classList.add('sortable-active');
+                },
                 onEnd: function (evt) {
-                    // Handle reordering for both workshops and carousel items
-                    if (evt.to.id === 'carousel-items-grid') {
-                        updateCarouselOrder();
+                    console.log('Finished dragging workshop card');
+                    // Remove visual feedback
+                    evt.from.classList.remove('sortable-active');
+                    evt.to.classList.remove('sortable-active');
+                    // Auto-save when workshop order changes
+                    saveAllChanges();
+                },
+                onMove: function(evt) {
+                    // Add smooth movement visual feedback
+                    const related = evt.related;
+                    if (related && !related.classList.contains('admin-help-text')) {
+                        related.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            if (related.style) related.style.transform = '';
+                        }, 200);
                     }
                 }
             });
         });
 
-        // Initialize sortable for carousel items grid specifically
+        // Initialize carousel items dragging
         if (carouselItemsGrid) {
             new Sortable(carouselItemsGrid, {
-                animation: 150,
+                animation: 300,
+                easing: "cubic-bezier(0.4, 0, 0.2, 1)",
                 ghostClass: 'sortable-ghost',
-                handle: '.admin-card-content',
-                filter: '.admin-help-text, .admin-card-actions, .btn',
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag',
+                draggable: '.admin-workshop-card',
+                filter: '.admin-help-text',
                 preventOnFilter: false,
-                onEnd: updateCarouselOrder
+                forceFallback: false,
+                fallbackTolerance: 0,
+                swapThreshold: 0.65,
+                swap: true,
+                onStart: function(evt) {
+                    console.log('Started dragging carousel item');
+                    evt.from.classList.add('sortable-active');
+                },
+                onEnd: function(evt) {
+                    console.log('Finished dragging carousel item');
+                    evt.from.classList.remove('sortable-active');
+                    evt.to.classList.remove('sortable-active');
+                    updateCarouselOrder();
+                },
+                onMove: function(evt) {
+                    const related = evt.related;
+                    if (related && !related.classList.contains('admin-help-text')) {
+                        related.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            if (related.style) related.style.transform = '';
+                        }, 200);
+                    }
+                }
             });
         }
 
-        // Initialize sortable for secondary carousel items grid specifically
+        // Initialize secondary carousel items dragging
         if (secondaryCarouselItemsGrid) {
             new Sortable(secondaryCarouselItemsGrid, {
-                animation: 150,
+                animation: 300,
+                easing: "cubic-bezier(0.4, 0, 0.2, 1)",
                 ghostClass: 'sortable-ghost',
-                handle: '.admin-card-content',
-                filter: '.admin-help-text, .admin-card-actions, .btn',
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag',
+                draggable: '.admin-workshop-card',
+                filter: '.admin-help-text',
                 preventOnFilter: false,
-                onEnd: updateSecondaryCarouselOrder
+                forceFallback: false,
+                fallbackTolerance: 0,
+                swapThreshold: 0.65,
+                swap: true,
+                onStart: function(evt) {
+                    console.log('Started dragging secondary carousel item');
+                    evt.from.classList.add('sortable-active');
+                },
+                onEnd: function(evt) {
+                    console.log('Finished dragging secondary carousel item');
+                    evt.from.classList.remove('sortable-active');
+                    evt.to.classList.remove('sortable-active');
+                    updateSecondaryCarouselOrder();
+                },
+                onMove: function(evt) {
+                    const related = evt.related;
+                    if (related && !related.classList.contains('admin-help-text')) {
+                        related.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            if (related.style) related.style.transform = '';
+                        }, 200);
+                    }
+                }
+            });
+        }
+
+        // Initialize testimonial videos dragging
+        if (testimonialVideosGrid) {
+            new Sortable(testimonialVideosGrid, {
+                animation: 300,
+                easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag',
+                draggable: '.admin-workshop-card',
+                filter: '.admin-help-text',
+                preventOnFilter: false,
+                forceFallback: false,
+                fallbackTolerance: 0,
+                swapThreshold: 0.65,
+                swap: true,
+                onStart: function(evt) {
+                    console.log('Started dragging testimonial video');
+                    evt.from.classList.add('sortable-active');
+                },
+                onEnd: function(evt) {
+                    console.log('Finished dragging testimonial video');
+                    evt.from.classList.remove('sortable-active');
+                    evt.to.classList.remove('sortable-active');
+                    updateTestimonialVideosOrder();
+                },
+                onMove: function(evt) {
+                    const related = evt.related;
+                    if (related && !related.classList.contains('admin-help-text')) {
+                        related.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            if (related.style) related.style.transform = '';
+                        }, 200);
+                    }
+                }
             });
         }
     }
@@ -912,7 +1332,7 @@
         itemEl.dataset.id = item.id;
         
         itemEl.innerHTML = `
-            <div class="admin-card-image" style="background-image: url('${item.imageUrl || '/static/assets/All_artist.jpg'}')">
+            <div class="admin-card-image" style="background-image: url('${item.imageUrl || '/static/assets/All_artist.jpg'}'); aspect-ratio: ${item.aspectRatioCategory || '3/4'}">
                 <div class="admin-card-actions">
                     <button type="button" class="btn btn-primary upload-carousel-image-btn" title="Upload Image" style="margin-right: 5px;">📁</button>
                     <button type="button" class="btn btn-danger delete-carousel-item-btn" title="Delete Carousel Item" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
@@ -1084,9 +1504,19 @@
                     const hiddenInput = itemEl.querySelector('input[name="imageUrl"]');
                     if (hiddenInput) hiddenInput.value = result.imageUrl;
                     
-                    // Update carouselData
+                    // Update carouselData with aspect ratio
                     const carouselItem = carouselData.find(c => c.id == item.id);
-                    if (carouselItem) carouselItem.imageUrl = result.imageUrl;
+                    if (carouselItem) {
+                        carouselItem.imageUrl = result.imageUrl;
+                        if (result.aspectRatio && result.aspectRatioCategory) {
+                            carouselItem.aspectRatio = result.aspectRatio;
+                            carouselItem.aspectRatioCategory = result.aspectRatioCategory;
+                            console.log(`Updated carousel aspect ratio for ${result.imageUrl}: ${result.aspectRatioCategory}`);
+                            
+                            // Apply aspect ratio to the preview image immediately
+                            cardImage.style.aspectRatio = result.aspectRatioCategory;
+                        }
+                    }
                     
                     // Update display text
                     const imageUrlElement = itemEl.querySelector('[data-field="imageUrl"]');
@@ -1161,7 +1591,7 @@
         itemEl.dataset.id = item.id;
         
         itemEl.innerHTML = `
-            <div class="admin-card-image" style="background-image: url('${item.imageUrl || '/static/assets/All_artist.jpg'}')">
+            <div class="admin-card-image" style="background-image: url('${item.imageUrl || '/static/assets/All_artist.jpg'}'); aspect-ratio: ${item.aspectRatioCategory || '3/4'}">
                 <div class="admin-card-actions">
                     <button type="button" class="btn btn-primary upload-secondary-carousel-image-btn" title="Upload Image" style="margin-right: 5px;">📁</button>
                     <button type="button" class="btn btn-danger delete-secondary-carousel-item-btn" title="Delete Secondary Carousel Item" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
@@ -1328,9 +1758,19 @@
                     const hiddenInput = itemEl.querySelector('input[name="imageUrl"]');
                     if (hiddenInput) hiddenInput.value = result.imageUrl;
                     
-                    // Update secondaryCarouselData
+                    // Update secondaryCarouselData with aspect ratio
                     const carouselItem = secondaryCarouselData.find(c => c.id == item.id);
-                    if (carouselItem) carouselItem.imageUrl = result.imageUrl;
+                    if (carouselItem) {
+                        carouselItem.imageUrl = result.imageUrl;
+                        if (result.aspectRatio && result.aspectRatioCategory) {
+                            carouselItem.aspectRatio = result.aspectRatio;
+                            carouselItem.aspectRatioCategory = result.aspectRatioCategory;
+                            console.log(`Updated secondary carousel aspect ratio for ${result.imageUrl}: ${result.aspectRatioCategory}`);
+                            
+                            // Apply aspect ratio to the preview image immediately
+                            cardImage.style.aspectRatio = result.aspectRatioCategory;
+                        }
+                    }
                     
                     // Update display text
                     const imageUrlElement = itemEl.querySelector('[data-field="imageUrl"]');
@@ -1398,6 +1838,11 @@
         const itemEl = createCarouselItemElement(newItem, carouselData.length - 1);
         carouselItemsGrid.appendChild(itemEl);
         
+        // Re-initialize sortable after adding new item
+        setTimeout(() => {
+            initSortable();
+        }, 50);
+        
         console.log('Added new carousel item:', newItem);
     });
 
@@ -1422,10 +1867,299 @@
         const itemEl = createSecondaryCarouselItemElement(newItem, secondaryCarouselData.length - 1);
         secondaryCarouselItemsGrid.appendChild(itemEl);
         
+        // Re-initialize sortable after adding new item
+        setTimeout(() => {
+            initSortable();
+        }, 50);
+        
         console.log('Added new secondary carousel item:', newItem);
     });
 
     saveSecondaryCarouselBtn.addEventListener('click', saveSecondaryCarouselChanges);
+
+    // --- Testimonial Videos Management Functions ---
+    function renderTestimonialVideos() {
+        testimonialVideosGrid.innerHTML = '';
+
+        if (testimonialVideosData.length === 0) {
+            testimonialVideosGrid.innerHTML = '<div class="admin-help-text">No testimonial videos yet. Click "Add Video" to get started.</div>';
+            return;
+        }
+
+        testimonialVideosData.forEach((video, index) => {
+            const videoEl = createTestimonialVideoElement(video, index);
+            testimonialVideosGrid.appendChild(videoEl);
+        });
+    }
+
+    function createTestimonialVideoElement(video, index) {
+        const videoEl = document.createElement('div');
+        videoEl.className = 'admin-workshop-card';
+        videoEl.dataset.id = video.id;
+
+        videoEl.innerHTML = `
+            <div class="admin-card-header">
+                <button type="button" class="btn btn-primary upload-video-btn" title="Upload Video" style="margin-right: 5px;">🎥</button>
+                <button type="button" class="btn btn-primary upload-thumbnail-btn" title="Upload Thumbnail" style="margin-right: 5px;">📁</button>
+                <button type="button" class="btn btn-danger delete-video-btn" title="Delete Video" style="cursor: pointer; background-color: #dc3545; color: white; border: 2px solid white;">DELETE</button>
+            </div>
+            <input type="file" class="video-upload" accept="video/*" style="display: none;">
+            <input type="file" class="thumbnail-upload" accept="image/*" style="display: none;">
+
+            <div class="admin-card-image" style="background-image: url('${video.thumbnail || '/static/assets/All_artist.jpg'}'); background-size: cover; background-position: center; height: 180px; border-radius: 8px; position: relative;">
+                ${video.url ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 10px; border-radius: 50%; font-size: 20px;">▶</div>' : ''}
+            </div>
+
+            <div class="admin-card-content">
+                <div class="admin-card-style" data-field="title">${video.title || 'Video Title'}</div>
+                <div class="admin-card-artist" data-field="description">${video.description || 'Video Description'}</div>
+                <div class="admin-card-details">
+                    <div class="admin-card-time" data-field="url">${video.url || 'No video uploaded'}</div>
+                    <div class="admin-card-date" data-field="thumbnail">${video.thumbnail || 'No thumbnail'}</div>
+                </div>
+            </div>
+
+            <div class="admin-card-footer">
+                <div class="admin-card-price">Video #${video.id}</div>
+            </div>
+
+            <!-- Hidden inputs for form data -->
+            <input type="hidden" name="id" value="${video.id}">
+            <input type="hidden" name="title" value="${video.title || ''}">
+            <input type="hidden" name="description" value="${video.description || ''}">
+            <input type="hidden" name="url" value="${video.url || ''}">
+            <input type="hidden" name="thumbnail" value="${video.thumbnail || ''}">
+        `;
+
+        // Make fields editable
+        const editableElements = videoEl.querySelectorAll('[data-field]');
+        editableElements.forEach(element => {
+            element.addEventListener('dblclick', () => {
+                const field = element.dataset.field;
+                const currentValue = element.textContent;
+                
+                const input = document.createElement('input');
+                input.className = 'editable-field';
+                input.value = currentValue === 'Video Title' || currentValue === 'Video Description' || currentValue === 'No video uploaded' || currentValue === 'No thumbnail' ? '' : currentValue;
+                input.type = 'text';
+                
+                element.style.display = 'none';
+                element.parentNode.insertBefore(input, element);
+                input.focus();
+                input.select();
+                
+                const saveEdit = () => {
+                    const newValue = input.value.trim();
+                    element.textContent = newValue || (field === 'title' ? 'Video Title' : field === 'description' ? 'Video Description' : field === 'url' ? 'No video uploaded' : 'No thumbnail');
+                    
+                    const hiddenInput = videoEl.querySelector(`input[name="${field}"]`);
+                    if (hiddenInput) hiddenInput.value = newValue;
+                    
+                    const videoItem = testimonialVideosData.find(v => v.id == video.id);
+                    if (videoItem) videoItem[field] = newValue;
+                    
+                    input.remove();
+                    element.style.display = '';
+                    videoEl.classList.remove('editing');
+                };
+                
+                input.addEventListener('blur', saveEdit);
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') saveEdit();
+                    if (e.key === 'Escape') {
+                        input.remove();
+                        element.style.display = '';
+                        videoEl.classList.remove('editing');
+                    }
+                });
+                
+                videoEl.classList.add('editing');
+            });
+        });
+
+        // Delete functionality
+        const deleteBtn = videoEl.querySelector('.delete-video-btn');
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            const userConfirmed = confirm(`Delete video "${video.title || 'Video #' + video.id}"?\n\nThis cannot be undone.`);
+            
+            if (userConfirmed) {
+                testimonialVideosData = testimonialVideosData.filter(v => v.id != video.id);
+                videoEl.remove();
+                
+                if (testimonialVideosData.length === 0) {
+                    testimonialVideosGrid.innerHTML = '<div class="admin-help-text">No testimonial videos yet. Click "Add Video" to get started.</div>';
+                }
+            }
+        });
+
+        // Video upload functionality
+        const uploadVideoBtn = videoEl.querySelector('.upload-video-btn');
+        const videoFileInput = videoEl.querySelector('.video-upload');
+        
+        uploadVideoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            videoFileInput.click();
+        });
+
+        videoFileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            try {
+                uploadVideoBtn.textContent = '⏳';
+                uploadVideoBtn.disabled = true;
+                
+                const response = await fetch('/api/upload-video', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Video upload failed');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const hiddenInput = videoEl.querySelector('input[name="url"]');
+                    if (hiddenInput) hiddenInput.value = result.videoUrl;
+                    
+                    const videoItem = testimonialVideosData.find(v => v.id == video.id);
+                    if (videoItem) videoItem.url = result.videoUrl;
+                    
+                    const urlElement = videoEl.querySelector('[data-field="url"]');
+                    if (urlElement) urlElement.textContent = result.videoUrl;
+                    
+                    // Add play button overlay
+                    const cardImage = videoEl.querySelector('.admin-card-image');
+                    const existingPlayButton = cardImage.querySelector('div');
+                    if (!existingPlayButton) {
+                        cardImage.innerHTML += '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 10px; border-radius: 50%; font-size: 20px;">▶</div>';
+                    }
+                    
+                    uploadVideoBtn.textContent = '✅';
+                    setTimeout(() => {
+                        uploadVideoBtn.textContent = '🎥';
+                        uploadVideoBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error(result.message || 'Video upload failed');
+                }
+            } catch (error) {
+                console.error('Error uploading video:', error);
+                alert('Video upload failed. Please try again.');
+                uploadVideoBtn.textContent = '❌';
+                setTimeout(() => {
+                    uploadVideoBtn.textContent = '🎥';
+                    uploadVideoBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // Thumbnail upload functionality
+        const uploadThumbnailBtn = videoEl.querySelector('.upload-thumbnail-btn');
+        const thumbnailFileInput = videoEl.querySelector('.thumbnail-upload');
+        
+        uploadThumbnailBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            thumbnailFileInput.click();
+        });
+
+        thumbnailFileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                uploadThumbnailBtn.textContent = '⏳';
+                uploadThumbnailBtn.disabled = true;
+                
+                const response = await fetch('/api/upload', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Thumbnail upload failed');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const cardImage = videoEl.querySelector('.admin-card-image');
+                    cardImage.style.backgroundImage = `url('${result.imageUrl}')`;
+                    
+                    const hiddenInput = videoEl.querySelector('input[name="thumbnail"]');
+                    if (hiddenInput) hiddenInput.value = result.imageUrl;
+                    
+                    const videoItem = testimonialVideosData.find(v => v.id == video.id);
+                    if (videoItem) videoItem.thumbnail = result.imageUrl;
+                    
+                    const thumbnailElement = videoEl.querySelector('[data-field="thumbnail"]');
+                    if (thumbnailElement) thumbnailElement.textContent = result.imageUrl;
+                    
+                    uploadThumbnailBtn.textContent = '✅';
+                    setTimeout(() => {
+                        uploadThumbnailBtn.textContent = '📁';
+                        uploadThumbnailBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error(result.message || 'Thumbnail upload failed');
+                }
+            } catch (error) {
+                console.error('Error uploading thumbnail:', error);
+                alert('Thumbnail upload failed. Please try again.');
+                uploadThumbnailBtn.textContent = '❌';
+                setTimeout(() => {
+                    uploadThumbnailBtn.textContent = '📁';
+                    uploadThumbnailBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        return videoEl;
+    }
+
+    async function saveTestimonialVideosChanges() {
+        try {
+            const saveResponse = await fetch('/api/testimonial-videos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(testimonialVideosData)
+            });
+            
+            if (!saveResponse.ok) throw new Error('Failed to save testimonial videos');
+            const result = await saveResponse.json();
+            console.log('Testimonial videos save result:', result);
+            alert('Testimonial videos saved successfully!');
+        } catch (error) {
+            console.error('Error saving testimonial videos:', error);
+            alert('Failed to save testimonial videos. Please try again.');
+        }
+    }
+
+    // Event Listeners for Testimonial Videos
+    addTestimonialVideoBtn.addEventListener('click', () => {
+        const existingIds = testimonialVideosData.map(v => parseInt(v.id) || 0);
+        const newId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
+        const newVideo = {
+            id: newId,
+            title: 'New Video',
+            description: 'Video description',
+            url: '',
+            thumbnail: '/static/assets/All_artist.jpg'
+        };
+        
+        testimonialVideosData.push(newVideo);
+        
+        const helpText = testimonialVideosGrid.querySelector('.admin-help-text');
+        if (helpText) helpText.remove();
+        
+        const videoEl = createTestimonialVideoElement(newVideo, testimonialVideosData.length - 1);
+        testimonialVideosGrid.appendChild(videoEl);
+        
+        setTimeout(() => {
+            initSortable();
+        }, 50);
+        
+        console.log('Added new testimonial video:', newVideo);
+    });
+
+    saveTestimonialVideosBtn.addEventListener('click', saveTestimonialVideosChanges);
 
     function updateCarouselOrder() {
         const items = Array.from(carouselItemsGrid.children);
@@ -1463,8 +2197,93 @@
         console.log('Secondary carousel order updated:', secondaryCarouselData.map(c => `Image ${c.id}`));
     }
 
+    function updateTestimonialVideosOrder() {
+        const items = Array.from(testimonialVideosGrid.children);
+        const newOrder = [];
+        
+        items.forEach((item, index) => {
+            if (item.classList.contains('admin-workshop-card')) {
+                const id = item.dataset.id;
+                const videoItem = testimonialVideosData.find(v => v.id == id);
+                if (videoItem) {
+                    newOrder.push(videoItem);
+                }
+            }
+        });
+        
+        testimonialVideosData = newOrder;
+        console.log('Testimonial videos order updated:', testimonialVideosData.map(v => v.title || `Video ${v.id}`));
+    }
+
+    // --- Aspect Ratio Detection for Existing Images ---
+    async function detectAspectRatioForImage(imageUrl) {
+        try {
+            const response = await fetch('/api/detect-aspect-ratio', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ imageUrl: imageUrl })
+            });
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                return {
+                    aspectRatio: result.aspectRatio,
+                    aspectRatioCategory: result.aspectRatioCategory
+                };
+            }
+        } catch (error) {
+            console.error('Error detecting aspect ratio for', imageUrl, error);
+        }
+        return null;
+    }
+
+    async function updateAllAspectRatios() {
+        console.log('Updating aspect ratios for all existing images...');
+        
+        // Update carousel data
+        for (const item of carouselData) {
+            if (item.imageUrl && !item.aspectRatioCategory) {
+                const aspectData = await detectAspectRatioForImage(item.imageUrl);
+                if (aspectData) {
+                    item.aspectRatio = aspectData.aspectRatio;
+                    item.aspectRatioCategory = aspectData.aspectRatioCategory;
+                    console.log(`Updated aspect ratio for carousel ${item.imageUrl}: ${aspectData.aspectRatioCategory}`);
+                }
+            }
+        }
+        
+        // Update secondary carousel data
+        for (const item of secondaryCarouselData) {
+            if (item.imageUrl && !item.aspectRatioCategory) {
+                const aspectData = await detectAspectRatioForImage(item.imageUrl);
+                if (aspectData) {
+                    item.aspectRatio = aspectData.aspectRatio;
+                    item.aspectRatioCategory = aspectData.aspectRatioCategory;
+                    console.log(`Updated aspect ratio for secondary carousel ${item.imageUrl}: ${aspectData.aspectRatioCategory}`);
+                }
+            }
+        }
+        
+        // Update sections data
+        for (const section of sectionsData) {
+            for (const item of section.items) {
+                if (item.image && !item.aspectRatioCategory) {
+                    const aspectData = await detectAspectRatioForImage(item.image);
+                    if (aspectData) {
+                        item.aspectRatio = aspectData.aspectRatio;
+                        item.aspectRatioCategory = aspectData.aspectRatioCategory;
+                        console.log(`Updated aspect ratio for section item ${item.image}: ${aspectData.aspectRatioCategory}`);
+                    }
+                }
+            }
+        }
+    }
+
     // --- Initial Load ---
-    fetchSections();
+    fetchSections().then(() => {
+        // Detect aspect ratios for existing images that don't have them
+        updateAllAspectRatios();
+    });
     
     // --- Debug Helper ---
     window.debugAdmin = {

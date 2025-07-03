@@ -1,10 +1,12 @@
-// Main Application Entry Point - Exact Recreation
+// Main Application Entry Point - Redesigned with Header and Navigation
 import { LoadingScreen } from './components/LoadingScreen.js';
+import { Header } from './components/Header.js';
 import { HeroSection } from './components/HeroSection.js';
 import { SecondaryCarousel } from './components/SecondaryCarousel.js';
 import { DanceWeekSection } from './components/DanceWeekSection.js';
 import { WorkshopsSection } from './components/WorkshopsSection.js';
 import { ShowcaseSection } from './components/ShowcaseSection.js';
+import { TestimonialsSection } from './components/TestimonialsSection.js';
 import { Footer } from './components/Footer.js';
 
 // React-like state management using vanilla JS
@@ -31,7 +33,7 @@ class ReactLikeState {
   }
 }
 
-// Main App Component - Exact recreation of original rE() function
+// Main App Component - Redesigned with Header and proper navigation
 class RTribeApp {
   constructor() {
     this.loadingState = new ReactLikeState(true);
@@ -39,13 +41,15 @@ class RTribeApp {
     this.carouselImagesState = new ReactLikeState([]);
     this.secondaryCarouselImagesState = new ReactLikeState([]);
     
-    // Initialize components (HeroSection and SecondaryCarousel will be initialized after data loads)
+    // Initialize components
     this.loadingScreen = new LoadingScreen();
+    this.header = new Header();
     this.heroSection = null;
     this.secondaryCarousel = null;
     this.danceWeekSection = new DanceWeekSection();
     this.workshopsSection = new WorkshopsSection();
     this.showcaseSection = new ShowcaseSection();
+    this.testimonialsSection = new TestimonialsSection();
     this.footer = new Footer();
     
     this.init();
@@ -162,14 +166,16 @@ class RTribeApp {
     // Clear any existing content
     rootElement.innerHTML = '';
 
-    // Create main app container - exact structure from original
+    // Create main app container with header
     const appContainer = document.createElement('div');
     appContainer.className = 'app';
     
-    // Create main content
+    // Add header first
+    appContainer.appendChild(this.header.render());
+    
+    // Create main content with proper section IDs
     const mainContent = document.createElement('main');
     
-    // Render all sections in exact order from original
     // Initialize HeroSection if not already done (with fallback data)
     if (!this.heroSection) {
       const fallbackCarousel = [
@@ -190,14 +196,52 @@ class RTribeApp {
       this.secondaryCarousel = new SecondaryCarousel(fallbackSecondaryCarousel);
     }
     
-    mainContent.appendChild(this.heroSection.render());           // r3
-    mainContent.appendChild(this.secondaryCarousel.render());     // Secondary carousel
-    mainContent.appendChild(this.danceWeekSection.render());      // K3
-    mainContent.appendChild(this.workshopsSection.render());     // L3 
-    mainContent.appendChild(this.showcaseSection.render());      // F3
+    // Render sections with proper IDs for navigation
+    const heroElement = this.heroSection.render();
+    heroElement.id = 'home'; // Home section
+    mainContent.appendChild(heroElement);
+    
+    // Create Regulars section wrapper with title
+    const regularsSection = document.createElement('section');
+    regularsSection.id = 'regulars';
+    regularsSection.className = 'regulars-section';
+    
+    const regularsTitle = document.createElement('div');
+    regularsTitle.className = 'section-header';
+    regularsTitle.innerHTML = `
+      <div class="container">
+        <h2 class="section-title">Regulars</h2>
+        <p class="section-subtitle">Our regular classes and ongoing programs</p>
+      </div>
+    `;
+    
+    const secondaryCarouselElement = this.secondaryCarousel.render();
+    regularsSection.appendChild(regularsTitle);
+    regularsSection.appendChild(secondaryCarouselElement);
+    mainContent.appendChild(regularsSection);
+    
+    // // Instructors section (Dance Week)
+    // const instructorsElement = this.danceWeekSection.render();
+    // instructorsElement.id = 'instructors';
+    // mainContent.appendChild(instructorsElement);
+    
+    // Workshops section
+    const workshopsElement = this.workshopsSection.render();
+    workshopsElement.id = 'workshops';
+    mainContent.appendChild(workshopsElement);
+    
+    // Testimonials section
+    mainContent.appendChild(this.testimonialsSection.render());
+    
+    // Showcase section (keeping original)
+    mainContent.appendChild(this.showcaseSection.render());
     
     appContainer.appendChild(mainContent);
-    appContainer.appendChild(this.footer.render());              // lE
+    
+    // Footer with contact ID
+    const footerElement = this.footer.render();
+    footerElement.id = 'contact';
+    appContainer.appendChild(footerElement);
 
     rootElement.appendChild(appContainer);
     
@@ -205,6 +249,21 @@ class RTribeApp {
     if (this.sectionsState.get().length > 0) {
       this.updateWorkshops(this.sectionsState.get());
     }
+    
+    // Setup smooth scrolling for header intersection observer
+    this.setupHeaderBehavior();
+  }
+
+  setupHeaderBehavior() {
+    // Add smooth scrolling behavior to the document
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Re-initialize header intersection observer after DOM is ready
+    setTimeout(() => {
+      if (this.header && this.header.setupIntersectionObserver) {
+        this.header.setupIntersectionObserver();
+      }
+    }, 100);
   }
 
   // WhatsApp registration function - exact recreation from original
@@ -230,11 +289,17 @@ class RTribeApp {
     if (this.loadingScreen) {
       this.loadingScreen.hide();
     }
+    if (this.header) {
+      this.header.destroy();
+    }
     if (this.heroSection) {
       this.heroSection.destroy();
     }
     if (this.secondaryCarousel) {
       this.secondaryCarousel.destroy();
+    }
+    if (this.testimonialsSection) {
+      this.testimonialsSection.destroy();
     }
   }
 }

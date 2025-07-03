@@ -11,6 +11,8 @@ export class SecondaryCarousel {
     this.totalSlides = carouselImages.length || 3;
     this.autoAdvanceInterval = null;
     this.isMobile = window.innerWidth <= 768;
+
+    this.containerAspectRatio = '3/4'; // Default aspect ratio
   }
 
   // Helper functions for carousel positioning (restored for circular layout)
@@ -35,6 +37,45 @@ export class SecondaryCarousel {
     return this.carouselImages[imageIndex]?.imageUrl || this.carouselImages[0]?.imageUrl || '';
   }
 
+  // Get aspect ratio from config or detect it as fallback
+  getImageAspectRatio(imageUrl) {
+    // Find the image item in carouselImages by URL
+    const imageItem = this.carouselImages.find(item => item.imageUrl === imageUrl);
+    
+    if (imageItem && imageItem.aspectRatioCategory) {
+      console.log(`Using config aspect ratio for secondary carousel ${imageUrl}: ${imageItem.aspectRatioCategory}`);
+      return imageItem.aspectRatioCategory;
+    }
+    
+    // Fallback to default if not in config
+    console.log(`No aspect ratio in config for secondary carousel ${imageUrl}, using default 3/4`);
+    return "3/4";
+  }
+
+  // Update container aspect ratio based on current image config
+  updateContainerAspectRatio() {
+    const currentImageUrl = this.getCurrentImageUrl();
+    if (!currentImageUrl) return;
+
+    // Get aspect ratio directly from config
+    this.containerAspectRatio = this.getImageAspectRatio(currentImageUrl);
+
+    // Apply the aspect ratio to the carousel
+    this.applyContainerAspectRatio();
+  }
+
+  // Apply the calculated aspect ratio to the carousel slides
+  applyContainerAspectRatio() {
+    if (!this.element) return;
+
+    const slides = this.element.querySelectorAll('.secondary-slide, .secondary-mobile-slide');
+    slides.forEach(slide => {
+      slide.style.aspectRatio = this.containerAspectRatio;
+    });
+
+    console.log(`Applied secondary carousel aspect ratio: ${this.containerAspectRatio}`);
+  }
+
   // Navigation functions
   nextSlide() {
     this.currentSlide = this.currentSlide === this.totalSlides ? 1 : this.currentSlide + 1;
@@ -51,7 +92,7 @@ export class SecondaryCarousel {
     this.updateCarousel();
   }
 
-  updateCarousel() {
+  async updateCarousel() {
     if (!this.element) return;
 
     // Update mobile slide
@@ -84,6 +125,9 @@ export class SecondaryCarousel {
         dot.classList.remove('active');
       }
     });
+
+    // Update container aspect ratio based on current image
+    this.updateContainerAspectRatio();
   }
 
   handleResize() {
@@ -136,7 +180,6 @@ export class SecondaryCarousel {
   render() {
     this.element = document.createElement('section');
     this.element.className = 'secondary-section';
-    this.element.id = 'home';
 
     // Create overlay
     const overlay = document.createElement('div');
@@ -228,7 +271,17 @@ export class SecondaryCarousel {
       this.startAutoAdvance();
     }
 
+    // Initialize aspect ratio detection for all images
+    this.initializeImageAspectRatios();
+
     return this.element;
+  }
+
+  // Initialize aspect ratios from config
+  initializeImageAspectRatios() {
+    console.log('Initializing secondary carousel aspect ratios from config...');
+    // Apply initial aspect ratio
+    this.updateContainerAspectRatio();
   }
 
   // Cleanup method

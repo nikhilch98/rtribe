@@ -15,6 +15,10 @@ export class DanceWeekSection {
     
     this.element.innerHTML = `
       <div class="dance-week-container">
+        <div class="section-header">
+          <h2 class="section-title">Instructors</h2>
+          <p class="section-subtitle">Meet our incredible dance instructors and artists</p>
+        </div>
         <h2 class="dance-week-title">Namma Dance Week is here, Bengaluru!</h2>
         <p class="dance-week-description">🕺 11 Artists, 1 Celebrity Guest. Infinite Vibe.</p>
         <div class="dance-week-showcase">Showcase: June 15th</div>
