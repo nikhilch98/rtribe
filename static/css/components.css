@@ -265,9 +265,11 @@
 
 .workshops-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2.5rem;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* wider cards */
+  gap: 3rem; /* spacing */
+  max-width: 1300px; /* allow wider cards while still fitting 3 */
+  margin: 0 auto;
+  padding: 0 4rem;
 }
 
 .workshop-card {
@@ -277,7 +279,7 @@
   box-shadow: 0 10px 25px rgba(106, 13, 173, 0.08);
   display: flex;
   flex-direction: column;
-  height: 420px;
+  height: 480px; /* slightly larger */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -287,7 +289,7 @@
 }
 
 .workshop-image-container {
-  flex: 0 0 70%;
+  flex: 0 0 75%; /* taller image area */
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -799,10 +801,11 @@
   }
   
   .workshops-grid {
-    grid-template-columns: minmax(260px, 1fr);
+    grid-template-columns: minmax(260px, 1fr); /* match wider cards on tablet */
     max-width: 400px;
     margin: 0 auto;
-    gap: 1.5rem;
+    gap: 2rem; /* slightly wider on tablet */
+    padding: 0 1rem; /* restore tighter padding on tablets */
   }
   
   .footer-grid {
@@ -824,7 +827,7 @@
   }
   
   .workshop-card {
-    height: 580px;
+    height: 620px; /* keep proportionally larger */
   }
   
   .workshop-card:hover {
@@ -960,6 +963,10 @@
     padding: 0.7rem 1.2rem;
     font-size: 1rem;
   }
+  
+  .workshops-grid {
+    padding: 0 0.5rem; /* minimal padding on mobile */
+  }
 }
 
 /* Exact CSS Recreation from Original Styled Components */
@@ -1035,17 +1042,29 @@
 /* Workshop Grid - w3 from original */
 .workshop-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 3.5rem;
   justify-content: center;
+  margin: 0 auto;
+  padding: 0 4rem;
+  max-width: 1400px; /* allow wider cards */
 }
 
 @media (max-width: 768px) {
   .workshop-grid {
-    grid-template-columns: minmax(400px, 1fr);
-    max-width: 520px;
-    margin: 0 auto;
-    gap: 2.5rem;
+    grid-template-columns: minmax(330px, 1fr);
+    max-width: 500px; /* allow for wider cards */
+    gap: 2.5rem; /* increased on tablet */
+    padding: 0 1rem; /* tighter on tablet */
+  }
+}
+
+@media (max-width: 480px) {
+  .workshop-grid {
+    grid-template-columns: minmax(330px, 1fr);
+    max-width: 500px; /* allow for wider cards */
+    gap: 1.5rem; /* maintain comfortable spacing on mobile */
+    padding: 0 0.5rem; /* minimal on mobile */
   }
 }
 
@@ -1057,7 +1076,7 @@
   box-shadow: 0 10px 25px rgba(106, 13, 173, 0.08);
   display: flex;
   flex-direction: column;
-  height: 550px;
+  height: 480px; /* slightly larger */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1068,7 +1087,7 @@
 
 @media (max-width: 768px) {
   .workshop-card {
-    height: 700px;
+    height: 620px; /* keep proportionally larger */
   }
   
   .workshop-card:hover {
@@ -1078,7 +1097,7 @@
 
 /* Workshop Image Container - C3 from original */
 .workshop-image-container {
-  flex: 0 0 70%;
+  flex: 0 0 75%; /* taller image area */
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -1091,7 +1110,7 @@
 
 @media (max-width: 768px) {
   .workshop-image-container {
-    flex: 0 0 85%;
+    flex: 0 0 88%; /* match increased ratio on tablet */
   }
 }
 
@@ -1529,8 +1548,8 @@ main {
 }
 
 .hero-slide-image {
-  max-width: 600px;
-  max-height: 750px;
+  max-width: 575px; /* reduced from 600px */
+  max-height: 775px; /* reduced from 750px */
   width: auto;
   height: auto;
   border-radius: 12px;
@@ -1541,34 +1560,34 @@ main {
 
 .hero-slide-center {
   left: 50%;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(-50%) scale(0.9); /* scale reduced from 1 to 0.9 */
   z-index: 3;
   opacity: 1;
 }
 
 .hero-slide-left {
-  left: 20%;
-  transform: translateX(-50%) scale(0.8);
+  left: 15%; /* shifted from 20% */
+  transform: translateX(-50%) scale(0.75); /* scale reduced from 0.8 */
   z-index: 1;
   opacity: 0.7;
   filter: brightness(0.7);
 }
 
 .hero-slide-left:hover {
-  transform: translateX(-50%) scale(0.85);
+  transform: translateX(-50%) scale(0.8); /* hover scale adjusted from 0.85 */
   cursor: pointer;
 }
 
 .hero-slide-right {
-  left: 80%;
-  transform: translateX(-50%) scale(0.8);
+  left: 85%; /* shifted from 80% */
+  transform: translateX(-50%) scale(0.75); /* scale reduced from 0.8 */
   z-index: 1;
   opacity: 0.7;
   filter: brightness(0.7);
 }
 
 .hero-slide-right:hover {
-  transform: translateX(-50%) scale(0.85);
+  transform: translateX(-50%) scale(0.8); /* hover scale adjusted from 0.85 */
   cursor: pointer;
 }
 
@@ -2224,8 +2243,8 @@ main {
 }
 
 .secondary-slide-image {
-  max-width: 600px;
-  max-height: 8000px;
+  max-width: 550px; /* reduced from 600px */
+  max-height: 700px; /* was 8000px (not useful), now realistic */
   width: auto;
   height: auto;
   border-radius: 12px;
@@ -2236,34 +2255,34 @@ main {
 
 .secondary-slide-center {
   left: 50%;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(-50%) scale(0.9); /* scale reduced from 1 to 0.9 */
   z-index: 3;
   opacity: 1;
 }
 
 .secondary-slide-left {
-  left: 20%;
-  transform: translateX(-50%) scale(0.8);
+  left: 15%; /* shifted from 20% to give more space */
+  transform: translateX(-50%) scale(0.75); /* scale reduced from 0.8 */
   z-index: 1;
   opacity: 0.7;
   filter: brightness(0.7);
 }
 
 .secondary-slide-left:hover {
-  transform: translateX(-50%) scale(0.85);
+  transform: translateX(-50%) scale(0.8); /* hover scale adjusted from 0.85 */
   cursor: pointer;
 }
 
 .secondary-slide-right {
-  left: 80%;
-  transform: translateX(-50%) scale(0.8);
+  left: 85%; /* shifted from 80% for symmetry */
+  transform: translateX(-50%) scale(0.75); /* scale reduced from 0.8 */
   z-index: 1;
   opacity: 0.7;
   filter: brightness(0.7);
 }
 
 .secondary-slide-right:hover {
-  transform: translateX(-50%) scale(0.85);
+  transform: translateX(-50%) scale(0.8); /* hover scale adjusted from 0.85 */
   cursor: pointer;
 }
 
@@ -3086,7 +3105,7 @@ main {
 
 .video-overlay {
   position: absolute;
-  bottom: 60px; /* Move up to avoid video controls */
+  bottom: 0; /* align with video bottom */
   left: 0;
   right: 0;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
@@ -3097,6 +3116,8 @@ main {
   align-items: flex-end;
   pointer-events: none; /* Allow clicks to pass through to video controls */
   z-index: 2;
+  border-radius: 0 0 16px 16px; /* match video border radius */
+  overflow: hidden; /* ensure gradient respects radius */
 }
 
 /* Carousel Indicators */
@@ -3566,5 +3587,25 @@ main {
   .progress-dot {
     width: 8px;
     height: 8px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .workshops-grid {
+    grid-template-columns: repeat(3, 1fr); /* exactly 3 columns on desktops */
+  }
+}
+
+@media (min-width: 1024px) {
+  .workshop-grid {
+    grid-template-columns: repeat(3, 1fr); /* exactly 3 columns on desktops */
+  }
+}
+
+@media (min-width: 768px) {
+  .workshops-grid,
+  .workshop-grid {
+    grid-template-columns: repeat(3, 1fr) !important; /* lock to 3 columns */
+    max-width: 1400px; /* enlarged container width */
   }
 } 

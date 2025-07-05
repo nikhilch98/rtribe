@@ -153,6 +153,7 @@ export class TestimonialsSection {
                 autoplay
                 playsinline
                 preload="metadata"
+                loop
               >
                 <source src="${currentVideo.url || ''}" type="video/mp4">
                 Your browser does not support the video tag.
@@ -339,8 +340,6 @@ export class TestimonialsSection {
     this.updateVideoPlayer();
   }
 
-
-
   updateVideoPlayer() {
     if (!this.element) return;
 
@@ -364,6 +363,11 @@ export class TestimonialsSection {
       
       // Load the new video
       videoElement.load();
+      
+      // Ensure autoplay properties
+      videoElement.autoplay = true;
+      videoElement.muted = true;
+      videoElement.loop = true;
       
       // Attempt to play the new video after a short delay
       setTimeout(() => {
