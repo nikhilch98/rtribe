@@ -73,7 +73,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/20250701_004008.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -84,7 +84,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/20250701_005808.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -95,7 +95,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/20250701_100005.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -106,7 +106,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/20250702_012143.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -117,7 +117,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Amulya.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -128,7 +128,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Bhaskar.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -139,7 +139,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Junaid.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -150,7 +150,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Siya.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -161,7 +161,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Swady.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -172,7 +172,7 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Wehzan.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         },
         {
@@ -183,10 +183,15 @@
           "style": null,
           "price": null,
           "image": "/static/assets/Yahvi.jpg",
-          "aspectRatio": 0.8,
+          "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
         }
       ]
+    },
+    {
+      "id": "section_1751594105705",
+      "title": "Workshops",
+      "items": []
     }
   ],
   "testimonialVideos": [
@@ -196,20 +201,6 @@
       "thumbnail": "/static/assets/20250625_164102_1.jpg",
       "title": "Hip Hop Workshop Highlights",
       "url": "/static/assets/videos/Video-705.mp4"
-    },
-    {
-      "description": "Beautiful contemporary expressions from our talented students",
-      "id": 2,
-      "thumbnail": "/static/assets/20250625_172352.jpg",
-      "title": "Contemporary Dance Session",
-      "url": "/static/assets/videos/dance-video-2.mp4"
-    },
-    {
-      "description": "High-energy Bollywood choreography in action",
-      "id": 3,
-      "thumbnail": "/static/assets/20250625_175540.jpg",
-      "title": "Bollywood Dance Energy",
-      "url": "/static/assets/videos/dance-video-3.mp4"
     }
   ]
 }

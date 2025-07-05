@@ -8,7 +8,6 @@ export class WorkshopsSection {
   render() {
     this.element = document.createElement('section');
     this.element.id = 'workshops';
-    this.element.style.backgroundColor = 'black';
     this.element.className = 'workshops-section';
     
     // Create container

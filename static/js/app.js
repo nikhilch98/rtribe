@@ -3,7 +3,6 @@ import { LoadingScreen } from './components/LoadingScreen.js';
 import { Header } from './components/Header.js';
 import { HeroSection } from './components/HeroSection.js';
 import { SecondaryCarousel } from './components/SecondaryCarousel.js';
-import { DanceWeekSection } from './components/DanceWeekSection.js';
 import { WorkshopsSection } from './components/WorkshopsSection.js';
 import { ShowcaseSection } from './components/ShowcaseSection.js';
 import { TestimonialsSection } from './components/TestimonialsSection.js';
@@ -46,7 +45,6 @@ class RTribeApp {
     this.header = new Header();
     this.heroSection = null;
     this.secondaryCarousel = null;
-    this.danceWeekSection = new DanceWeekSection();
     this.workshopsSection = new WorkshopsSection();
     this.showcaseSection = new ShowcaseSection();
     this.testimonialsSection = new TestimonialsSection();
@@ -201,29 +199,11 @@ class RTribeApp {
     heroElement.id = 'home'; // Home section
     mainContent.appendChild(heroElement);
     
-    // Create Regulars section wrapper with title
-    const regularsSection = document.createElement('section');
-    regularsSection.id = 'regulars';
-    regularsSection.className = 'regulars-section';
-    
-    const regularsTitle = document.createElement('div');
-    regularsTitle.className = 'section-header';
-    regularsTitle.innerHTML = `
-      <div class="container">
-        <h2 class="section-title">Regulars</h2>
-        <p class="section-subtitle">Our regular classes and ongoing programs</p>
-      </div>
-    `;
-    
+    // Regulars section (secondary carousel with integrated title)
     const secondaryCarouselElement = this.secondaryCarousel.render();
-    regularsSection.appendChild(regularsTitle);
-    regularsSection.appendChild(secondaryCarouselElement);
-    mainContent.appendChild(regularsSection);
+    secondaryCarouselElement.id = 'regulars';
+    mainContent.appendChild(secondaryCarouselElement);
     
-    // // Instructors section (Dance Week)
-    // const instructorsElement = this.danceWeekSection.render();
-    // instructorsElement.id = 'instructors';
-    // mainContent.appendChild(instructorsElement);
     
     // Workshops section
     const workshopsElement = this.workshopsSection.render();

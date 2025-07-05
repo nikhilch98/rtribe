@@ -37,44 +37,7 @@ export class SecondaryCarousel {
     return this.carouselImages[imageIndex]?.imageUrl || this.carouselImages[0]?.imageUrl || '';
   }
 
-  // Get aspect ratio from config or detect it as fallback
-  getImageAspectRatio(imageUrl) {
-    // Find the image item in carouselImages by URL
-    const imageItem = this.carouselImages.find(item => item.imageUrl === imageUrl);
-    
-    if (imageItem && imageItem.aspectRatioCategory) {
-      console.log(`Using config aspect ratio for secondary carousel ${imageUrl}: ${imageItem.aspectRatioCategory}`);
-      return imageItem.aspectRatioCategory;
-    }
-    
-    // Fallback to default if not in config
-    console.log(`No aspect ratio in config for secondary carousel ${imageUrl}, using default 3/4`);
-    return "3/4";
-  }
 
-  // Update container aspect ratio based on current image config
-  updateContainerAspectRatio() {
-    const currentImageUrl = this.getCurrentImageUrl();
-    if (!currentImageUrl) return;
-
-    // Get aspect ratio directly from config
-    this.containerAspectRatio = this.getImageAspectRatio(currentImageUrl);
-
-    // Apply the aspect ratio to the carousel
-    this.applyContainerAspectRatio();
-  }
-
-  // Apply the calculated aspect ratio to the carousel slides
-  applyContainerAspectRatio() {
-    if (!this.element) return;
-
-    const slides = this.element.querySelectorAll('.secondary-slide, .secondary-mobile-slide');
-    slides.forEach(slide => {
-      slide.style.aspectRatio = this.containerAspectRatio;
-    });
-
-    console.log(`Applied secondary carousel aspect ratio: ${this.containerAspectRatio}`);
-  }
 
   // Navigation functions
   nextSlide() {
@@ -96,24 +59,24 @@ export class SecondaryCarousel {
     if (!this.element) return;
 
     // Update mobile slide
-    const mobileSlide = this.element.querySelector('.secondary-mobile-slide');
-    if (mobileSlide) {
-      mobileSlide.style.backgroundImage = `url(${this.getCurrentImageUrl()})`;
+    const mobileSlideImg = this.element.querySelector('.secondary-mobile-slide img');
+    if (mobileSlideImg) {
+      mobileSlideImg.src = this.getCurrentImageUrl();
     }
 
     // Update desktop slides (circular layout)
-    const leftSlide = this.element.querySelector('.secondary-slide-left');
-    const centerSlide = this.element.querySelector('.secondary-slide-center');
-    const rightSlide = this.element.querySelector('.secondary-slide-right');
+    const leftSlideImg = this.element.querySelector('.secondary-slide-left img');
+    const centerSlideImg = this.element.querySelector('.secondary-slide-center img');
+    const rightSlideImg = this.element.querySelector('.secondary-slide-right img');
 
-    if (leftSlide) {
-      leftSlide.style.backgroundImage = `url(${this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || ''})`;
+    if (leftSlideImg) {
+      leftSlideImg.src = this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || '';
     }
-    if (centerSlide) {
-      centerSlide.style.backgroundImage = `url(${this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || ''})`;
+    if (centerSlideImg) {
+      centerSlideImg.src = this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || '';
     }
-    if (rightSlide) {
-      rightSlide.style.backgroundImage = `url(${this.carouselImages[this.getRightSlideIndex()]?.imageUrl || ''})`;
+    if (rightSlideImg) {
+      rightSlideImg.src = this.carouselImages[this.getRightSlideIndex()]?.imageUrl || '';
     }
 
     // Update navigation dots
@@ -125,9 +88,6 @@ export class SecondaryCarousel {
         dot.classList.remove('active');
       }
     });
-
-    // Update container aspect ratio based on current image
-    this.updateContainerAspectRatio();
   }
 
   handleResize() {
@@ -179,7 +139,17 @@ export class SecondaryCarousel {
 
   render() {
     this.element = document.createElement('section');
-    this.element.className = 'secondary-section';
+    this.element.className = 'secondary-section regulars-section';
+
+    // Create section header
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = `
+      <div class="container">
+        <h2 class="section-title">Regulars</h2>
+        <p class="section-subtitle">Our weekly dance classes and fitness sessions</p>
+      </div>
+    `;
 
     // Create overlay
     const overlay = document.createElement('div');
@@ -188,30 +158,43 @@ export class SecondaryCarousel {
     // Mobile carousel
     let mobileContent = '';
     if (this.isMobile) {
+      const currentImageUrl = this.getCurrentImageUrl();
+      console.log('Secondary mobile carousel image:', currentImageUrl);
+      
       mobileContent = `
-        <div class="secondary-mobile-slide" style="background-image: url(${this.getCurrentImageUrl()})"></div>
+        <div class="secondary-mobile-slide">
+          <img src="${currentImageUrl}" alt="Slide ${this.currentSlide}" class="secondary-slide-image" onerror="console.error('Failed to load mobile image:', this.src)" />
+        </div>
       `;
     }
 
     // Desktop carousel (circular layout)
     let desktopContent = '';
     if (!this.isMobile) {
+      const leftImageUrl = this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || '';
+      const centerImageUrl = this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || '';
+      const rightImageUrl = this.carouselImages[this.getRightSlideIndex()]?.imageUrl || '';
+      
+      console.log('Secondary carousel images:', { leftImageUrl, centerImageUrl, rightImageUrl });
+      
       desktopContent = `
         <div class="secondary-desktop-container">
           <div class="secondary-carousel-wrapper">
             <div class="secondary-slides-container">
-              <div class="secondary-slide secondary-slide-left" style="background-image: url(${this.carouselImages[this.getLeftSlideIndex()]?.imageUrl || ''})"></div>
-              <div class="secondary-slide secondary-slide-center" style="background-image: url(${this.carouselImages[this.getCenterSlideIndex()]?.imageUrl || ''})"></div>
-              <div class="secondary-slide secondary-slide-right" style="background-image: url(${this.carouselImages[this.getRightSlideIndex()]?.imageUrl || ''})"></div>
+              <div class="secondary-slide secondary-slide-left">
+                <img src="${leftImageUrl}" alt="Left slide" class="secondary-slide-image" onerror="console.error('Failed to load left image:', this.src)" />
+              </div>
+              <div class="secondary-slide secondary-slide-center">
+                <img src="${centerImageUrl}" alt="Center slide" class="secondary-slide-image" onerror="console.error('Failed to load center image:', this.src)" />
+              </div>
+              <div class="secondary-slide secondary-slide-right">
+                <img src="${rightImageUrl}" alt="Right slide" class="secondary-slide-image" onerror="console.error('Failed to load right image:', this.src)" />
+              </div>
             </div>
           </div>
         </div>
       `;
     }
-
-    // Content area (hidden)
-    const contentArea = document.createElement('div');
-    contentArea.className = 'secondary-content';
 
     // Navigation dots (only show if more than 1 slide)
     const navigation = document.createElement('div');
@@ -233,18 +216,22 @@ export class SecondaryCarousel {
       navigation.appendChild(dotsContainer);
     }
 
-    // Assemble the section
-    this.element.appendChild(overlay);
+    // Create carousel container
+    const carouselContainer = document.createElement('div');
+    carouselContainer.className = 'secondary-carousel-main';
+
+    // Assemble the carousel content
+    carouselContainer.appendChild(overlay);
     
     if (this.isMobile) {
-      this.element.insertAdjacentHTML('beforeend', mobileContent);
+      carouselContainer.insertAdjacentHTML('beforeend', mobileContent);
     } else {
-      this.element.insertAdjacentHTML('beforeend', desktopContent);
+      carouselContainer.insertAdjacentHTML('beforeend', desktopContent);
       
       // Add click handlers for desktop slides (keyboard navigation will still work)
       setTimeout(() => {
-        const leftSlide = this.element.querySelector('.secondary-slide-left');
-        const rightSlide = this.element.querySelector('.secondary-slide-right');
+        const leftSlide = carouselContainer.querySelector('.secondary-slide-left');
+        const rightSlide = carouselContainer.querySelector('.secondary-slide-right');
         
         if (leftSlide) {
           leftSlide.addEventListener('click', () => this.prevSlide());
@@ -255,8 +242,11 @@ export class SecondaryCarousel {
       }, 0);
     }
 
-    this.element.appendChild(contentArea);
-    this.element.appendChild(navigation);
+    carouselContainer.appendChild(navigation);
+
+    // Assemble the complete section
+    this.element.appendChild(header);
+    this.element.appendChild(carouselContainer);
 
     // Add keyboard navigation
     if (this.totalSlides > 1) {
@@ -271,17 +261,7 @@ export class SecondaryCarousel {
       this.startAutoAdvance();
     }
 
-    // Initialize aspect ratio detection for all images
-    this.initializeImageAspectRatios();
-
     return this.element;
-  }
-
-  // Initialize aspect ratios from config
-  initializeImageAspectRatios() {
-    console.log('Initializing secondary carousel aspect ratios from config...');
-    // Apply initial aspect ratio
-    this.updateContainerAspectRatio();
   }
 
   // Cleanup method
