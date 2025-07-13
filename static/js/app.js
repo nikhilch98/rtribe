@@ -38,6 +38,7 @@ class RTribeApp {
     this.sectionsState = new ReactLikeState([]);
     this.carouselImagesState = new ReactLikeState([]);
     this.secondaryCarouselImagesState = new ReactLikeState([]);
+    this.whatsappConfig = null;
     
     // Initialize components
     this.loadingScreen = new LoadingScreen();
@@ -77,6 +78,13 @@ class RTribeApp {
         const sectionsData = config.sections || [];
         this.sectionsState.set(sectionsData);
         
+        // Set WhatsApp configuration
+        this.whatsappConfig = config.whatsappConfig || {
+          phoneNumber: '917338003939',
+          workshopMessageTemplate: 'Hi, I\'m interested for {style} by {artist} on {date} {time}.',
+          generalInquiryMessage: 'RTRIBE Workshop Inquiry. Please share workshop details.'
+        };
+        
         // Set carousel images from config data
         const carouselImages = config.carouselImages || [
           { id: 1, imageUrl: '/static/assets/All_artist.jpg' },
@@ -107,6 +115,9 @@ class RTribeApp {
         if (!this.loadingState.get()) {
           this.updateWorkshops(sectionsData);
         }
+        
+        // Make WhatsApp config globally available
+        window.rtribeApp = this;
       })
       .catch(error => {
         console.error("Error loading sections:", error);
@@ -142,6 +153,9 @@ class RTribeApp {
         if (!this.loadingState.get()) {
           this.updateWorkshops([]);
         }
+        
+        // Make WhatsApp config globally available
+        window.rtribeApp = this;
       });
   }
 
@@ -241,18 +255,23 @@ class RTribeApp {
     }, 100);
   }
 
-  // WhatsApp registration function - exact recreation from original
+  // WhatsApp registration function - now uses configurable message template
   registerForWorkshop(workshop) {
-    // Exact message format from original: e.date.replace(", 2025", "")
-    const message = `Hi, I'm interested for ${workshop.style} by ${workshop.artist} on ${workshop.date.replace(", 2025", "")} ${workshop.time}.`;
-    const whatsappUrl = `https://wa.me/917338003939?text=${encodeURIComponent(message)}`;
+    // Use configurable template with workshop details
+    const message = this.whatsappConfig.workshopMessageTemplate
+      .replace('{style}', workshop.style || 'Workshop')
+      .replace('{artist}', workshop.artist || 'Artist')
+      .replace('{date}', (workshop.date || '').replace(', 2025', ''))
+      .replace('{time}', workshop.time || '');
+    
+    const whatsappUrl = `https://wa.me/${this.whatsappConfig.phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   }
 
-  // General inquiry function - exact from original Footer
+  // General inquiry function - now uses configurable message
   sendGeneralInquiry() {
-    const message = "RTRIBE Workshop Inquiry. Please share workshop details.";
-    const whatsappUrl = `https://wa.me/917338003939?text=${encodeURIComponent(message)}`;
+    const message = this.whatsappConfig.generalInquiryMessage;
+    const whatsappUrl = `https://wa.me/${this.whatsappConfig.phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   }
 

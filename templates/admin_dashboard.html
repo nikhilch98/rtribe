@@ -331,6 +331,40 @@
 
         .admin-card-price:hover { background-color: rgba(106, 13, 173, 0.1); }
 
+        .admin-card-whatsapp {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .admin-card-whatsapp-label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .admin-card-whatsapp-message {
+            font-size: 0.75rem;
+            color: #333;
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        .admin-card-whatsapp-message:hover {
+            background-color: #e9ecef;
+            border-color: #6c757d;
+        }
+
         .admin-card-actions {
             position: absolute;
             top: 10px;
@@ -647,6 +681,41 @@
             <div id="testimonial-videos-grid" class="workshop-cards-grid"></div>
         </div>
 
+        <!-- WhatsApp Configuration Section -->
+        <div class="section-editor">
+            <div class="section-header">
+                <h2 style="margin: 0; color: var(--dark-purple);">📱 WhatsApp Configuration</h2>
+                <div class="section-actions">
+                    <button id="save-whatsapp-btn" class="btn btn-success">Save WhatsApp Settings</button>
+                </div>
+            </div>
+            <div style="padding: 1rem 0;">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="whatsapp-phone">Phone Number (with country code)</label>
+                    <input type="text" id="whatsapp-phone" placeholder="917338003939" style="font-family: monospace;">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="workshop-message-template">Workshop Registration Message Template</label>
+                    <textarea id="workshop-message-template" rows="3" placeholder="Hi, I'm interested for {style} by {artist} on {date} {time}." style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                    <small style="color: #666; font-size: 0.8em;">Use {style}, {artist}, {date}, {time} as placeholders</small>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="general-inquiry-message">General Inquiry Message</label>
+                    <textarea id="general-inquiry-message" rows="2" placeholder="RTRIBE Workshop Inquiry. Please share workshop details." style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                </div>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-purple);">
+                    <strong>💡 WhatsApp Message Variables:</strong>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li><strong>{style}</strong> - Dance style (e.g., "Hip Hop", "Contemporary")</li>
+                        <li><strong>{artist}</strong> - Artist/instructor name</li>
+                        <li><strong>{date}</strong> - Workshop date (year automatically removed)</li>
+                        <li><strong>{time}</strong> - Workshop time</li>
+                        <li><strong>Note:</strong> If workshop details are incomplete, general inquiry message will be used</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div id="sections-container"></div>
         <button id="add-section-btn" class="btn btn-primary">+ Add New Section</button>
     </div>
@@ -669,6 +738,7 @@
     let carouselData = [];
     let secondaryCarouselData = [];
     let testimonialVideosData = [];
+    let whatsappConfig = {};
 
     // --- Data Fetching and Saving ---
     async function fetchSections() {
@@ -693,10 +763,19 @@
             testimonialVideosData = config.testimonialVideos || [];
             console.log('Loaded testimonial videos data:', testimonialVideosData);
             
+            // Extract WhatsApp configuration
+            whatsappConfig = config.whatsappConfig || {
+                phoneNumber: '917338003939',
+                workshopMessageTemplate: 'Hi, I\'m interested for {style} by {artist} on {date} {time}.',
+                generalInquiryMessage: 'RTRIBE Workshop Inquiry. Please share workshop details.'
+            };
+            console.log('Loaded WhatsApp config:', whatsappConfig);
+            
             renderAllSections();
             renderCarouselItems();
             renderSecondaryCarouselItems();
             renderTestimonialVideos();
+            renderWhatsAppConfig();
         } catch (error) {
             console.error('Error fetching sections:', error);
             alert('Could not load section data. Please refresh.');
@@ -838,6 +917,7 @@
                 date: null, 
                 style: null, 
                 price: null, 
+                whatsappMessage: null,
                 image: '/static/assets/All_artist.jpg' 
             };
             
@@ -892,6 +972,11 @@
                     <div class="admin-card-price" data-field="price">${item.price || '[Click to add price]'}</div>
                     <button class="btn btn-primary" style="pointer-events: none;">Register Now</button>
                 </div>
+                
+                <div class="admin-card-whatsapp">
+                    <div class="admin-card-whatsapp-label">💬 WhatsApp Message:</div>
+                    <div class="admin-card-whatsapp-message" data-field="whatsappMessage">${item.whatsappMessage || '[Click to add custom WhatsApp message]'}</div>
+                </div>
             </div>
             
             <!-- Hidden inputs for data storage -->
@@ -901,6 +986,7 @@
             <input type="hidden" name="date" value="${item.date || ''}">
             <input type="hidden" name="style" value="${item.style || ''}">
             <input type="hidden" name="price" value="${item.price || ''}">
+            <input type="hidden" name="whatsappMessage" value="${item.whatsappMessage || ''}">
             <input type="hidden" name="image" value="${item.image || '/static/assets/All_artist.jpg'}">
             <input type="hidden" name="aspectRatio" value="${item.aspectRatio || ''}">
             <input type="hidden" name="aspectRatioCategory" value="${item.aspectRatioCategory || ''}">
@@ -2160,6 +2246,82 @@
     });
 
     saveTestimonialVideosBtn.addEventListener('click', saveTestimonialVideosChanges);
+
+    // --- WhatsApp Configuration Functions ---
+    function renderWhatsAppConfig() {
+        const phoneInput = document.getElementById('whatsapp-phone');
+        const templateInput = document.getElementById('workshop-message-template');
+        const inquiryInput = document.getElementById('general-inquiry-message');
+        
+        if (phoneInput) phoneInput.value = whatsappConfig.phoneNumber || '917338003939';
+        if (templateInput) templateInput.value = whatsappConfig.workshopMessageTemplate || 'Hi, I\'m interested for {style} by {artist} on {date} {time}.';
+        if (inquiryInput) inquiryInput.value = whatsappConfig.generalInquiryMessage || 'RTRIBE Workshop Inquiry. Please share workshop details.';
+    }
+
+    async function saveWhatsAppConfig() {
+        const phoneInput = document.getElementById('whatsapp-phone');
+        const templateInput = document.getElementById('workshop-message-template');
+        const inquiryInput = document.getElementById('general-inquiry-message');
+        
+        if (!phoneInput || !templateInput || !inquiryInput) {
+            alert('WhatsApp configuration form not found. Please refresh the page.');
+            return;
+        }
+
+        const updatedConfig = {
+            phoneNumber: phoneInput.value.trim(),
+            workshopMessageTemplate: templateInput.value.trim(),
+            generalInquiryMessage: inquiryInput.value.trim()
+        };
+
+        // Validate phone number
+        if (!updatedConfig.phoneNumber || !/^\d+$/.test(updatedConfig.phoneNumber)) {
+            alert('Please enter a valid phone number with country code (numbers only).');
+            return;
+        }
+
+        // Validate message templates
+        if (!updatedConfig.workshopMessageTemplate) {
+            alert('Please enter a workshop message template.');
+            return;
+        }
+
+        if (!updatedConfig.generalInquiryMessage) {
+            alert('Please enter a general inquiry message.');
+            return;
+        }
+
+        try {
+            // Read current config
+            const response = await fetch('/api/sections');
+            if (!response.ok) throw new Error('Failed to fetch current config');
+            const config = await response.json();
+            
+            // Update WhatsApp config
+            config.whatsappConfig = updatedConfig;
+            
+            // Save updated config
+            const saveResponse = await fetch('/api/whatsapp-config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedConfig)
+            });
+            
+            if (!saveResponse.ok) throw new Error('Failed to save WhatsApp configuration');
+            
+            whatsappConfig = updatedConfig;
+            alert('WhatsApp configuration saved successfully!');
+        } catch (error) {
+            console.error('Error saving WhatsApp configuration:', error);
+            alert('Failed to save WhatsApp configuration. Please try again.');
+        }
+    }
+
+    // Event Listeners for WhatsApp Configuration
+    const saveWhatsAppBtn = document.getElementById('save-whatsapp-btn');
+    if (saveWhatsAppBtn) {
+        saveWhatsAppBtn.addEventListener('click', saveWhatsAppConfig);
+    }
 
     function updateCarouselOrder() {
         const items = Array.from(carouselItemsGrid.children);

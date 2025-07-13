@@ -342,6 +342,49 @@ def upload_video():
 
     return jsonify({'status': 'error', 'message': 'Video file type not allowed. Supported: mp4, mov, avi, webm'}), 400
 
+@app.route('/api/whatsapp-config', methods=['POST'])
+@login_required
+def save_whatsapp_config():
+    """
+    Saves WhatsApp configuration data to the config file.
+    Preserves sections and other config data.
+    """
+    whatsapp_data = request.get_json()
+    if not isinstance(whatsapp_data, dict):
+        return jsonify({'status': 'error', 'message': 'Invalid data format. Expected a dictionary.'}), 400
+    
+    # Validate required fields
+    required_fields = ['phoneNumber', 'workshopMessageTemplate', 'generalInquiryMessage']
+    for field in required_fields:
+        if field not in whatsapp_data or not whatsapp_data[field]:
+            return jsonify({'status': 'error', 'message': f'Missing required field: {field}'}), 400
+    
+    # Validate phone number format
+    if not whatsapp_data['phoneNumber'].isdigit():
+        return jsonify({'status': 'error', 'message': 'Phone number must contain only digits'}), 400
+    
+    # Read current config to preserve other data
+    config = read_config()
+    
+    # Update WhatsApp configuration
+    config['whatsappConfig'] = whatsapp_data
+    
+    # Ensure other required fields exist
+    if 'siteData' not in config:
+        config['siteData'] = {'title': 'Workshops'}
+    if 'sections' not in config:
+        config['sections'] = []
+    if 'carouselImages' not in config:
+        config['carouselImages'] = []
+    
+    write_config(config)
+    
+    return jsonify({
+        'status': 'success', 
+        'message': 'WhatsApp configuration saved successfully.',
+        'phoneNumber': whatsapp_data['phoneNumber']
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8004)

@@ -976,7 +976,7 @@
 .workshop-image-container {
   flex: 0 0 75%; /* taller image area */
   overflow: hidden;
-  position: relative;
+  position: relative; /* Required for absolute positioned overlay button */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -1176,6 +1176,63 @@
   .workshop-register-button:hover {
     transform: none;
     box-shadow: none;
+  }
+}
+
+/* Overlaid Register Button Styles */
+.workshop-register-button-overlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(106, 13, 173, 0.9);
+  color: var(--primary-white);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.workshop-register-button-overlay:hover {
+  background: rgba(106, 13, 173, 1);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.workshop-register-button-overlay:active {
+  transform: translateY(0) scale(1);
+  transition: all 0.1s ease;
+}
+
+@media (max-width: 768px) {
+  .workshop-register-button-overlay {
+    bottom: 8px;
+    right: 8px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+  
+  .workshop-register-button-overlay:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (max-width: 480px) {
+  .workshop-register-button-overlay {
+    bottom: 6px;
+    right: 6px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.7rem;
   }
 }
 

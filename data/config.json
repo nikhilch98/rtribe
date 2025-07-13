@@ -2,6 +2,11 @@
   "siteData": {
     "title": "Workshops"
   },
+  "whatsappConfig": {
+    "phoneNumber": "917338003939",
+    "workshopMessageTemplate": "Hi, I'm interested for {style} by {artist} on {date} {time}.",
+    "generalInquiryMessage": "RTRIBE Workshop Inquiry. Please share workshop details."
+  },
   "carouselImages": [
     {
       "description": "Description for new carousel item",

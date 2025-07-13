@@ -89,6 +89,16 @@ export class WorkshopsSection {
     image.loading = 'lazy';
 
     imageContainer.appendChild(image);
+
+    // Register button - overlaid on image in bottom right
+    const registerButton = document.createElement('button');
+    registerButton.className = 'workshop-register-button-overlay';
+    registerButton.textContent = 'Register Now';
+    registerButton.addEventListener('click', () => {
+      this.registerForWorkshop(workshop);
+    });
+    imageContainer.appendChild(registerButton);
+
     card.appendChild(imageContainer);
 
     // Check if we have any non-image content to display
@@ -98,15 +108,10 @@ export class WorkshopsSection {
     const hasTime = workshop.time && workshop.time.trim() !== '';
     const hasPrice = workshop.price && workshop.price.trim() !== '';
 
-    // If all fields except image are null/empty, show only the image
-    if (!hasStyle && !hasArtist && !hasDate && !hasTime && !hasPrice) {
-      // Make the image container full height when no content is present
-      imageContainer.style.height = '100%';
-      imageContainer.style.flex = '1';
-      return card;
-    }
+    // Always show content area for register button, even if other fields are empty
+    const shouldShowContent = hasStyle || hasArtist || hasDate || hasTime || hasPrice || true; // Always show for register button
 
-    // Workshop content - O3 from original (only if we have content to show)
+    // Workshop content - O3 from original (always show for register button)
     const content = document.createElement('div');
     content.className = 'workshop-content';
 
@@ -134,83 +139,63 @@ export class WorkshopsSection {
       content.appendChild(header);
     }
 
-    // Workshop details - B3 from original (only if we have details to show)
-    if (hasDate || hasTime || hasPrice) {
-      const details = document.createElement('div');
-      details.className = 'workshop-details';
+    // Workshop details - B3 from original (always show for register button)
+    const details = document.createElement('div');
+    details.className = 'workshop-details';
 
-      // Workshop info container - U3 from original (only if date or time exists)
-      if (hasDate || hasTime) {
-        const infoContainer = document.createElement('div');
-        infoContainer.className = 'workshop-info-container';
+    // Workshop info container - U3 from original (only if date or time exists)
+    if (hasDate || hasTime) {
+      const infoContainer = document.createElement('div');
+      infoContainer.className = 'workshop-info-container';
 
-        // Date info - only if present
-        if (hasDate) {
-          const dateInfo = document.createElement('div');
-          dateInfo.className = 'workshop-info-item';
-          const dateIcon = document.createElement('span');
-          dateIcon.className = 'workshop-icon';
-          dateIcon.textContent = '📅';
-          const dateText = document.createElement('span');
-          dateText.textContent = workshop.date;
-          dateInfo.appendChild(dateIcon);
-          dateInfo.appendChild(dateText);
-          infoContainer.appendChild(dateInfo);
-        }
-
-        // Time info - only if present
-        if (hasTime) {
-          const timeInfo = document.createElement('div');
-          timeInfo.className = 'workshop-info-item';
-          const timeIcon = document.createElement('span');
-          timeIcon.className = 'workshop-icon';
-          timeIcon.textContent = '🕐';
-          const timeText = document.createElement('span');
-          timeText.textContent = workshop.time;
-          timeInfo.appendChild(timeIcon);
-          timeInfo.appendChild(timeText);
-          infoContainer.appendChild(timeInfo);
-        }
-
-        details.appendChild(infoContainer);
+      // Date info - only if present
+      if (hasDate) {
+        const dateInfo = document.createElement('div');
+        dateInfo.className = 'workshop-info-item';
+        const dateIcon = document.createElement('span');
+        dateIcon.className = 'workshop-icon';
+        dateIcon.textContent = '📅';
+        const dateText = document.createElement('span');
+        dateText.textContent = workshop.date;
+        dateInfo.appendChild(dateIcon);
+        dateInfo.appendChild(dateText);
+        infoContainer.appendChild(dateInfo);
       }
 
-      // Workshop footer - j3 from original (only if price exists or we want to show register button)
-      if (hasPrice || (hasStyle && hasArtist && hasDate && hasTime)) {
-        const footer = document.createElement('div');
-        footer.className = 'workshop-footer';
-
-        // Workshop price - N3 from original (only if present)
-        if (hasPrice) {
-          const price = document.createElement('div');
-          price.className = 'workshop-price';
-          price.textContent = workshop.price;
-          footer.appendChild(price);
-        }
-
-        // Register button - H3 from original (only show if we have enough info for registration)
-        if (hasStyle && hasArtist && hasDate && hasTime) {
-          const registerButton = document.createElement('button');
-          registerButton.className = 'workshop-register-button';
-          registerButton.textContent = 'Register Now';
-          registerButton.addEventListener('click', () => {
-            if (window.registerForWorkshop) {
-              window.registerForWorkshop(workshop);
-            }
-          });
-          footer.appendChild(registerButton);
-        }
-
-        details.appendChild(footer);
+      // Time info - only if present
+      if (hasTime) {
+        const timeInfo = document.createElement('div');
+        timeInfo.className = 'workshop-info-item';
+        const timeIcon = document.createElement('span');
+        timeIcon.className = 'workshop-icon';
+        timeIcon.textContent = '🕐';
+        const timeText = document.createElement('span');
+        timeText.textContent = workshop.time;
+        timeInfo.appendChild(timeIcon);
+        timeInfo.appendChild(timeText);
+        infoContainer.appendChild(timeInfo);
       }
 
-      content.appendChild(details);
+      details.appendChild(infoContainer);
     }
 
-    // Only append content if we actually have content to show
-    if (content.children.length > 0) {
-      card.appendChild(content);
+    // Workshop footer - j3 from original (only show price, register button is now overlaid)
+    const footer = document.createElement('div');
+    footer.className = 'workshop-footer';
+
+    // Workshop price - N3 from original (only if present)
+    if (hasPrice) {
+      const price = document.createElement('div');
+      price.className = 'workshop-price';
+      price.textContent = workshop.price;
+      footer.appendChild(price);
     }
+
+    details.appendChild(footer);
+    content.appendChild(details);
+
+    // Always append content for register button
+    card.appendChild(content);
 
     return card;
   }
@@ -230,5 +215,36 @@ export class WorkshopsSection {
         card.style.transform = 'translateY(0)';
       });
     });
+  }
+
+  // WhatsApp registration function with individual workshop messages
+  registerForWorkshop(workshop) {
+    // Get WhatsApp config from global app or use defaults
+    const whatsappConfig = window.rtribeApp?.whatsappConfig || {
+      phoneNumber: '917338003939',
+      workshopMessageTemplate: 'Hi, I\'m interested for {style} by {artist} on {date} {time}.',
+      generalInquiryMessage: 'RTRIBE Workshop Inquiry. Please share workshop details.'
+    };
+
+    let message;
+    
+    // First, check if this workshop has a custom WhatsApp message
+    if (workshop.whatsappMessage && workshop.whatsappMessage.trim() !== '') {
+      // Use the individual workshop's custom message
+      message = workshop.whatsappMessage;
+    } else if (workshop.style && workshop.artist && workshop.date && workshop.time) {
+      // Fallback to configurable template with workshop details
+      message = whatsappConfig.workshopMessageTemplate
+        .replace('{style}', workshop.style)
+        .replace('{artist}', workshop.artist)
+        .replace('{date}', workshop.date.replace(', 2025', ''))
+        .replace('{time}', workshop.time);
+    } else {
+      // Use general inquiry message for incomplete workshop data
+      message = whatsappConfig.generalInquiryMessage;
+    }
+
+    const whatsappUrl = `https://wa.me/${whatsappConfig.phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   }
 } 
