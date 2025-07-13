@@ -1,0 +1,91 @@
+/* === Admin Login Styles: Mobile-First & Responsive === */
+
+/* Design System Variables */
+:root {
+  --primary-purple: #6A0DAD;
+  --dark-purple: #4A0080;
+  --primary-white: #FFFFFF;
+  --secondary-white: #F5F5F5;
+  --text-dark: #333333;
+  --danger-red: #dc3545;
+  --border-color: #ccc;
+}
+
+/* Base Styles */
+body {
+  font-family: Montserrat, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--secondary-white);
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Login Container */
+.login-container {
+  background: var(--primary-white);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-purple);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+button {
+  background-color: var(--primary-purple);
+  color: var(--primary-white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.25s ease;
+}
+
+button:hover {
+  background-color: var(--dark-purple);
+}
+
+/* Error Message */
+.error {
+  color: var(--danger-red);
+  margin-top: 1rem;
+  font-weight: 500;
+}
+

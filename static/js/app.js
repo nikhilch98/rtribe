@@ -4,7 +4,6 @@ import { Header } from './components/Header.js';
 import { HeroSection } from './components/HeroSection.js';
 import { SecondaryCarousel } from './components/SecondaryCarousel.js';
 import { WorkshopsSection } from './components/WorkshopsSection.js';
-import { ShowcaseSection } from './components/ShowcaseSection.js';
 import { TestimonialsSection } from './components/TestimonialsSection.js';
 import { Footer } from './components/Footer.js';
 
@@ -46,7 +45,6 @@ class RTribeApp {
     this.heroSection = null;
     this.secondaryCarousel = null;
     this.workshopsSection = new WorkshopsSection();
-    this.showcaseSection = new ShowcaseSection();
     this.testimonialsSection = new TestimonialsSection();
     this.footer = new Footer();
     
@@ -212,9 +210,6 @@ class RTribeApp {
     
     // Testimonials section
     mainContent.appendChild(this.testimonialsSection.render());
-    
-    // Showcase section (keeping original)
-    mainContent.appendChild(this.showcaseSection.render());
     
     appContainer.appendChild(mainContent);
     
