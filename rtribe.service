@@ -1,0 +1,29 @@
+[Unit]
+Description=RTRIBE Dance Studio Flask Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user/rtribe
+Environment=PATH=/home/ec2-user/rtribe/venv/bin
+ExecStart=/home/ec2-user/rtribe/venv/bin/python app.py
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=10
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/ec2-user/rtribe
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rtribe
+
+[Install]
+WantedBy=multi-user.target 

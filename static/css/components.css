@@ -305,8 +305,9 @@
   box-shadow: 0 10px 25px rgba(106, 13, 173, 0.08);
   display: flex;
   flex-direction: column;
-  height: 480px; /* slightly larger */
+  height: auto; /* Changed from fixed height to auto to remove white space */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
 }
 
 .workshop-card:hover {
@@ -315,7 +316,8 @@
 }
 
 .workshop-image-container {
-  flex: 0 0 75%; /* taller image area */
+  flex: 1 1 auto; /* Changed from flex: 0 0 75% to allow image to fill space */
+  min-height: 0;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -940,9 +942,9 @@
   box-shadow: 0 10px 25px rgba(106, 13, 173, 0.08);
   display: flex;
   flex-direction: column;
-  height: 480px; /* slightly larger */
+  height: auto; /* Changed from fixed height to auto to remove white space */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%; /* ensure full width */
+  width: 100%;
 }
 
 .workshop-card:hover {
@@ -974,7 +976,8 @@
 
 /* Workshop Image Container - C3 from original */
 .workshop-image-container {
-  flex: 0 0 75%; /* taller image area */
+  flex: 1 1 auto; /* Changed from flex: 0 0 75% to allow image to fill space */
+  min-height: 0;
   overflow: hidden;
   position: relative; /* Required for absolute positioned overlay button */
   width: 100%;
