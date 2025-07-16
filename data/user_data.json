@@ -1,0 +1,20 @@
+{
+  "9999999999": {
+    "mobile": "9999999999",
+    "name": "Admin",
+    "email": "admin@rtribe.com",
+    "dateOfBirth": "1998-01-01",
+    "gender": "male",
+    "createdAt": "2025-07-15T16:45:23.633707",
+    "updatedAt": "2025-07-16T10:22:57.012259"
+  },
+  "8985374940": {
+    "mobile": "8985374940",
+    "createdAt": "2025-07-16T10:49:26.231247",
+    "name": "NIkhil Chatragadda",
+    "email": "nc12@iitbbs.ac.in",
+    "dateOfBirth": "1998-03-14",
+    "gender": "male",
+    "updatedAt": "2025-07-16T10:49:26.231258"
+  }
+}

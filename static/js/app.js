@@ -241,6 +241,9 @@ class RTribeApp {
     
     // Setup smooth scrolling for header intersection observer
     this.setupHeaderBehavior();
+    
+    // Check login state after all DOM elements are rendered
+    this.header.checkLoginState();
   }
 
   setupHeaderBehavior() {

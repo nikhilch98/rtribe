@@ -1,0 +1,75 @@
+# TWILIO CONFIGURATION GUIDE
+# ========================
+
+This file contains instructions for setting up Twilio environment variables
+for the RTRIBE OTP authentication system.
+
+## Step 1: Get Your Twilio Credentials
+
+1. Go to https://console.twilio.com/
+2. Sign up or log in to your Twilio account
+3. On the dashboard, you'll find:
+   - Account SID (starts with "AC...")
+   - Auth Token (click to reveal)
+
+## Step 2: Create a Verify Service
+
+1. Go to https://console.twilio.com/verify/services
+2. Click "Create new service"
+3. Give it a name like "RTRIBE OTP"
+4. Copy the Service SID (starts with "VA...")
+
+## Step 3: Set Environment Variables
+
+### Option A: Export in your terminal session
+```bash
+export TWILIO_ACCOUNT_SID="your_account_sid_here"
+export TWILIO_AUTH_TOKEN="your_auth_token_here"
+export TWILIO_VERIFY_SERVICE_SID="your_verify_service_sid_here"
+```
+
+### Option B: Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+```bash
+echo 'export TWILIO_ACCOUNT_SID="your_account_sid_here"' >> ~/.bashrc
+echo 'export TWILIO_AUTH_TOKEN="your_auth_token_here"' >> ~/.bashrc
+echo 'export TWILIO_VERIFY_SERVICE_SID="your_verify_service_sid_here"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Option C: Create a .env file (then load with python-dotenv)
+```
+TWILIO_ACCOUNT_SID=your_account_sid_here
+TWILIO_AUTH_TOKEN=your_auth_token_here
+TWILIO_VERIFY_SERVICE_SID=your_verify_service_sid_here
+```
+
+## Step 4: Test the Configuration
+
+1. Run the app: `python3 app.py`
+2. Check the startup logs for "Twilio client initialized successfully"
+3. Test with a real phone number in the login modal
+
+## Test Mode (No Twilio Required)
+
+For testing without SMS charges, use:
+- Mobile Number: 9999999999
+- OTP Code: 123456
+
+## Troubleshooting
+
+- Make sure environment variables are set in the same terminal session
+- Check Twilio console for account status and balance
+- Verify the Verify Service is active
+- Check Flask logs for detailed error messages
+
+## Running the App
+
+After setting environment variables:
+```bash
+python3 app.py
+```
+
+Or use the helper script:
+```bash
+./run_with_twilio.sh
+``` 

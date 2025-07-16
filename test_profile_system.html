@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile System Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; margin: 10px; background: #6A0DAD; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Profile System Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Login with Test Credentials</h2>
+        <button onclick="testLogin()">Login (9999999999 / 123456)</button>
+        <div id="loginResult" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Profile API</h2>
+        <button onclick="testGetProfile()">Get Profile</button>
+        <button onclick="testUpdateProfile()">Update Profile</button>
+        <div id="profileResult" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Profile Form</h2>
+        <input type="text" id="testName" placeholder="Name" />
+        <input type="email" id="testEmail" placeholder="Email" />
+        <input type="date" id="testDob" placeholder="Date of Birth" />
+        <select id="testGender">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <button onclick="populateForm()">Populate from API</button>
+        <button onclick="saveForm()">Save Form Data</button>
+    </div>
+
+    <script>
+        let authToken = localStorage.getItem('rtribe_auth_token');
+
+        async function testLogin() {
+            const logDiv = document.getElementById('loginResult');
+            
+            try {
+                // Step 1: Send OTP
+                logDiv.textContent = 'Sending OTP...';
+                const otpResponse = await fetch('/api/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile_number: '9999999999' })
+                });
+                const otpData = await otpResponse.json();
+                logDiv.textContent += '\nOTP Response: ' + JSON.stringify(otpData, null, 2);
+
+                if (otpData.success) {
+                    // Step 2: Verify OTP
+                    logDiv.textContent += '\nVerifying OTP...';
+                    const verifyResponse = await fetch('/api/verify-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            mobile_number: '9999999999',
+                            otp: '123456'
+                        })
+                    });
+                    const verifyData = await verifyResponse.json();
+                    logDiv.textContent += '\nVerify Response: ' + JSON.stringify(verifyData, null, 2);
+
+                    if (verifyData.success) {
+                        authToken = verifyData.access_token;
+                        localStorage.setItem('rtribe_auth_token', authToken);
+                        logDiv.textContent += '\n✅ Login successful! Token saved.';
+                    }
+                }
+            } catch (error) {
+                logDiv.textContent += '\n❌ Error: ' + error.message;
+            }
+        }
+
+        async function testGetProfile() {
+            const logDiv = document.getElementById('profileResult');
+            
+            if (!authToken) {
+                logDiv.textContent = '❌ No auth token. Please login first.';
+                return;
+            }
+
+            try {
+                logDiv.textContent = 'Getting profile...';
+                const response = await fetch('/api/get-profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                logDiv.textContent += '\nProfile Response: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                logDiv.textContent += '\n❌ Error: ' + error.message;
+            }
+        }
+
+        async function testUpdateProfile() {
+            const logDiv = document.getElementById('profileResult');
+            
+            if (!authToken) {
+                logDiv.textContent = '❌ No auth token. Please login first.';
+                return;
+            }
+
+            try {
+                logDiv.textContent = 'Updating profile...';
+                const profileData = {
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    dateOfBirth: '1990-01-01',
+                    gender: 'other',
+                    profilePicture: ''
+                };
+
+                const response = await fetch('/api/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                });
+                const data = await response.json();
+                logDiv.textContent += '\nUpdate Response: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                logDiv.textContent += '\n❌ Error: ' + error.message;
+            }
+        }
+
+        async function populateForm() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/get-profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success && data.profile) {
+                    const profile = data.profile;
+                    document.getElementById('testName').value = profile.name || '';
+                    document.getElementById('testEmail').value = profile.email || '';
+                    document.getElementById('testDob').value = profile.dateOfBirth || '';
+                    document.getElementById('testGender').value = profile.gender || '';
+                    alert('Form populated with profile data!');
+                } else {
+                    alert('Failed to get profile data: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function saveForm() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const profileData = {
+                    name: document.getElementById('testName').value,
+                    email: document.getElementById('testEmail').value,
+                    dateOfBirth: document.getElementById('testDob').value,
+                    gender: document.getElementById('testGender').value,
+                    profilePicture: ''
+                };
+
+                const response = await fetch('/api/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Profile saved successfully!');
+                } else {
+                    alert('Failed to save profile: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Check if already logged in
+        if (authToken) {
+            document.getElementById('loginResult').textContent = '✅ Already logged in with token: ' + authToken.substring(0, 20) + '...';
+        }
+    </script>
+</body>
+</html> 
