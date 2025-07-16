@@ -12,9 +12,9 @@ export class LoadingScreen {
     this.element.className = 'loading-screen';
     this.element.innerHTML = `
       <div class="loading-content">
-        <h1>NAMMA Dance Week</h1>
+        <h1>Welcome to Rtribe!</h1>
         <p style="color: var(--primary-purple); margin-bottom: 1.5rem;">
-          Rtribe Dance Studio
+          Dance & Wellness Space
         </p>
         <div class="loading-spinner">
           <img src="/static/assets/log.gif" alt="Loading..." class="loading-gif" />
