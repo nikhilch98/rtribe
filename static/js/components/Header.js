@@ -31,7 +31,7 @@ export class Header {
               <a href="#regulars" class="nav-link">Regulars</a>
             </li>
             <li class="nav-item">
-              <a href="#workshops" class="nav-link">Instructors</a>
+              <a href="#workshops" class="nav-link">Teachers</a>
             </li>
             <li class="nav-item">
               <a href="#workshops" class="nav-link">Workshops</a>
