@@ -9,26 +9,18 @@
   },
   "carouselImages": [
     {
-      "description": "Description for new carousel item",
-      "id": 3,
-      "imageUrl": "/static/assets/fees1.jpg",
-      "title": "New Carousel Item",
       "aspectRatio": 0.8,
-      "aspectRatioCategory": "3/4"
-    },
-    {
-      "description": "View the complete workshop schedule",
-      "id": 2,
-      "imageUrl": "/static/assets/schedule.jpg",
-      "title": "Schedule",
-      "aspectRatio": 1.78,
-      "aspectRatioCategory": "16/9"
-    },
-    {
+      "aspectRatioCategory": "3/4",
       "description": "Meet all our talented dance instructors",
       "id": 1,
-      "imageUrl": "/static/assets/All_artist.jpg",
-      "title": "All Artists",
+      "imageUrl": "/static/assets/SaveClip.App_517284898_18033218243676123_2640893785490415595_n.jpg",
+      "title": "All Artists"
+    },
+    {
+      "id": 2,
+      "title": "New Carousel Item",
+      "description": "Description for new carousel item",
+      "imageUrl": "/static/assets/SaveClip.App_514856757_2013286505746049_7561333084920940597_n.jpg",
       "aspectRatio": 0.8,
       "aspectRatioCategory": "3/4"
     }
@@ -77,6 +69,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/20250701_004008.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -88,6 +81,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/20250701_005808.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -99,6 +93,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/20250701_100005.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -110,6 +105,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/20250702_012143.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -121,6 +117,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Amulya.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -132,6 +129,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Bhaskar.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -143,6 +141,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Junaid.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -154,6 +153,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Siya.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -165,6 +165,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Swady.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -176,6 +177,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Wehzan.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -187,6 +189,7 @@
           "date": null,
           "style": null,
           "price": null,
+          "whatsappMessage": null,
           "image": "/static/assets/Yahvi.jpg",
           "aspectRatio": "0.8",
           "aspectRatioCategory": "3/4"
@@ -196,15 +199,52 @@
     {
       "id": "section_1751594105705",
       "title": "Workshops",
-      "items": []
+      "items": [
+        {
+          "id": 1,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "whatsappMessage": null,
+          "image": "/static/assets/SaveClip.App_514856757_2013286505746049_7561333084920940597_n.jpg",
+          "aspectRatio": "0.8",
+          "aspectRatioCategory": "3/4"
+        },
+        {
+          "id": 2,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "whatsappMessage": null,
+          "image": "/static/assets/SaveClip.App_517284898_18033218243676123_2640893785490415595_n.jpg",
+          "aspectRatio": "0.8",
+          "aspectRatioCategory": "3/4"
+        },
+        {
+          "id": 3,
+          "artist": null,
+          "time": null,
+          "date": null,
+          "style": null,
+          "price": null,
+          "whatsappMessage": null,
+          "image": "/static/assets/SaveClip.App_517035116_18492198880066009_7073131956743021872_n.jpg",
+          "aspectRatio": "0.8",
+          "aspectRatioCategory": "3/4"
+        }
+      ]
     }
   ],
   "testimonialVideos": [
     {
-      "description": "Students showing their moves in our popular hip hop class",
+      "description": "This isn\u2019t just a workshop; it\u2019s a celebration of love, support, and the incredible journey that brought our very own dance space to life. \ud83d\udc96 Join @bhaskarsuresh_official as he grooves to the happiest song of recent times, spreading joy and gratitude with every move. Let\u2019s dance together, for this is a moment like no other and we\u2019re offering it at a never like before price.",
       "id": 1,
       "thumbnail": "/static/assets/20250625_164102_1.jpg",
-      "title": "Hip Hop Workshop Highlights",
+      "title": "A Workshop by Our Co-Founder",
       "url": "/static/assets/videos/Video-705.mp4"
     }
   ]
